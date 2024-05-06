@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    {{ $output }}
+    {{ $text }}
 </body>
 
 </html>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\YearController;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,7 @@ Route::prefix('admin')->middleware(['is_admin'])->group(function () {
         return view('admins.dashboard');
     });
     Route::resource('year', YearController::class);
+    Route::resource('course', CourseController::class);
 });
 Route::prefix('teacher')->middleware(['is_teacher'])->group(function () {
     Route::get('/', function () {

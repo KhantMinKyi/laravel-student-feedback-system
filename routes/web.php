@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\YearController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,11 +19,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('login');
 });
-Route::post('/login', [AuthController::class, 'login']);
 Route::prefix('admin')->middleware(['is_admin'])->group(function () {
     Route::get('/', function () {
         return view('admins.dashboard');
     });
+    Route::resource('year', YearController::class);
 });
 Route::prefix('teacher')->middleware(['is_teacher'])->group(function () {
     Route::get('/', function () {
@@ -35,4 +36,5 @@ Route::prefix('student')->middleware(['is_student'])->group(function () {
     });
 });
 Route::post('/text', [TestController::class, 'index']);
+Route::post('/login', [AuthController::class, 'login']);
 Route::get('/logout', [AuthController::class, 'logout']);

@@ -16,4 +16,8 @@ class Course extends Model
     {
         return $this->belongsTo(Year::class);
     }
+    public function teachers()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

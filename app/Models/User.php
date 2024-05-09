@@ -52,8 +52,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    public function teachers()
+    public static function teachers()
     {
-        return User::where('type', 'admin')->get();
+        return User::where('type', 'teacher')->get();
     }
 }

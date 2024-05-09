@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\TeacherCourseController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\YearController;
+use App\Models\TeacherCourse;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,6 +30,7 @@ Route::prefix('admin')->middleware(['is_admin'])->group(function () {
     Route::resource('year', YearController::class);
     Route::resource('course', CourseController::class);
     Route::resource('user', UserController::class);
+    Route::resource('teacher_course', TeacherCourseController::class);
     Route::get('/teacher_list', [UserController::class, 'teacherList'])->name('teacher.index');
 });
 Route::prefix('teacher')->middleware(['is_teacher'])->group(function () {

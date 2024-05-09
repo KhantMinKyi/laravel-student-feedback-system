@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\YearController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,9 +24,11 @@ Route::get('/', function () {
 Route::prefix('admin')->middleware(['is_admin'])->group(function () {
     Route::get('/', function () {
         return view('admins.dashboard');
-    });
+    })->name('admin.index');
     Route::resource('year', YearController::class);
     Route::resource('course', CourseController::class);
+    Route::resource('user', UserController::class);
+    Route::get('/teacher_list', [UserController::class, 'teacherList'])->name('teacher.index');
 });
 Route::prefix('teacher')->middleware(['is_teacher'])->group(function () {
     Route::get('/', function () {

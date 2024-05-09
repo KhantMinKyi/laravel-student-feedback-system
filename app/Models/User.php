@@ -20,7 +20,17 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'username',
         'password',
+        'dob',
+        'uni_registration_no',
+        'type',
+        'is_hod',
+        'address',
+        'father_name',
+        'nrc',
+        'gender',
+        'phone',
     ];
 
     /**
@@ -42,4 +52,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    public function teachers()
+    {
+        return User::where('type', 'admin')->get();
+    }
 }

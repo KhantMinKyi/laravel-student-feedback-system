@@ -82,14 +82,14 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="{{ route('teacher.index') }}"
+                    <a href="{{ route('teacher.list') }}"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <i class="fa-solid fa-person-chalkboard"></i>
                         <span class="flex-1 ms-3 whitespace-nowrap">Teachers</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('student.index') }}"
+                    <a href="{{ route('student.list') }}"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <i class="fa-solid fa-user-graduate"></i>
                         <span class="flex-1 ms-3 whitespace-nowrap">Students</span>

@@ -71,6 +71,6 @@ class User extends Authenticatable
     }
     public function student_year()
     {
-        return $this->hasMany(StudentYear::class);
+        return $this->hasMany(StudentYear::class, 'student_id')->with('year');
     }
 }

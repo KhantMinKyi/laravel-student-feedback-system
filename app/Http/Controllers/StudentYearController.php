@@ -14,7 +14,7 @@ class StudentYearController extends Controller
      */
     public function index()
     {
-        $student_years = StudentYear::with('student', 'year')->get();
+        $student_years = StudentYear::with('student', 'year')->orderBy('learning_year', 'desc')->get();
         return view('admins.setting.student_year.student_year_list', compact('student_years'));
     }
 
@@ -94,5 +94,6 @@ class StudentYearController extends Controller
             return redirect()->back();
         }
         $student_year->delete();
+        return redirect()->route('student_year.index');
     }
 }

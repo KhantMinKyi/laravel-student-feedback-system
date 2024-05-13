@@ -33,18 +33,25 @@ Route::prefix('admin')->middleware(['is_admin'])->group(function () {
     Route::resource('user', UserController::class);
     Route::resource('teacher_course', TeacherCourseController::class);
     Route::resource('student_year', StudentYearController::class);
-    Route::get('/teacher_list', [UserController::class, 'teacherList'])->name('teacher.index');
-    Route::get('/student_list', [UserController::class, 'studentList'])->name('student.index');
+    Route::get('/teacher_list', [UserController::class, 'teacherList'])->name('teacher.list');
+    Route::get('/student_list', [UserController::class, 'studentList'])->name('student.list');
 });
+
+// Teacher
 Route::prefix('teacher')->middleware(['is_teacher'])->group(function () {
     Route::get('/', function () {
         return view('teachers.dashboard');
-    });
+    })->name('teacher.index');
+    Route::get('/teacher_list', [UserController::class, 'teacherList'])->name('teacher.teacher.index');
+    Route::get('/student_list', [UserController::class, 'studentList'])->name('teacher.student.index');
 });
+
+// Student
 Route::prefix('student')->middleware(['is_student'])->group(function () {
     Route::get('/', function () {
         return view('students.dashboard');
-    });
+    })->name('student.index');
+    Route::get('/teacher_list', [UserController::class, 'teacherList'])->name('student.teacher.index');
 });
 Route::post('/text', [TestController::class, 'index']);
 Route::post('/login', [AuthController::class, 'login']);

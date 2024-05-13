@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserStoreUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
@@ -101,13 +102,23 @@ class UserController extends Controller
         //         return $courses;
         //     }
         // }
-
-        return view('admins.teacher.teacher_list', compact('teachers'));
+        $user_type = Auth::user()->type;
+        if ($user_type == 'admin') {
+            return view('admins.teacher.teacher_list', compact('teachers'));
+        } else if ($user_type == 'student') {
+            return view('students.teacher.teacher_list', compact('teachers'));
+        } else if ($user_type == 'teacher') {
+            return view('teachers.teacher.teacher_list', compact('teachers'));
+        }
     }
     public function studentList()
     {
-        $students = User::where('type', 'student')->get();
-
-        return view('admins.student.student_list', compact('students'));
+        $students = User::where('type', 'student', 'student_year')->get();
+        $user_type = Auth::user()->type;
+        if ($user_type == 'admin') {
+            return view('admins.student.student_list', compact('students'));
+        } else if ($user_type == 'teacher') {
+            return view('teachers.student.student_list', compact('students'));
+        }
     }
 }

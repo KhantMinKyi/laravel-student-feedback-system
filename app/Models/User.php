@@ -69,4 +69,8 @@ class User extends Authenticatable
 
         return $data;
     }
+    public function student_year()
+    {
+        return $this->hasMany(StudentYear::class);
+    }
 }

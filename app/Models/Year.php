@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Year extends Model
 {
+
     use HasFactory;
     protected $fillable = [
         'year_name',
@@ -15,5 +16,9 @@ class Year extends Model
     public function courses()
     {
         return $this->hasMany(Course::class);
+    }
+    public function student_year()
+    {
+        return $this->hasMany(StudentYear::class);
     }
 }

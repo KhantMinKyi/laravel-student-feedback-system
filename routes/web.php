@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\StudentYearController;
 use App\Http\Controllers\TeacherCourseController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
@@ -31,6 +32,7 @@ Route::prefix('admin')->middleware(['is_admin'])->group(function () {
     Route::resource('course', CourseController::class);
     Route::resource('user', UserController::class);
     Route::resource('teacher_course', TeacherCourseController::class);
+    Route::resource('student_year', StudentYearController::class);
     Route::get('/teacher_list', [UserController::class, 'teacherList'])->name('teacher.index');
     Route::get('/student_list', [UserController::class, 'studentList'])->name('student.index');
 });

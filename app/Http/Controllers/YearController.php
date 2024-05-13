@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
+use App\Models\TeacherCourse;
 use App\Models\Year;
 use Illuminate\Http\Request;
 
@@ -79,7 +81,12 @@ class YearController extends Controller
      */
     public function destroy(string $id)
     {
-        Year::find($id)->delete();
+        $year = Year::find($id);
+        $courses = Course::where('year_id', $year->id)->get();
+        foreach ($courses as $course) {
+            TeacherCourse::where('course_id', $course->id)->delete();
+        }
+        $year->delete();
         return redirect()->route('year.index');
     }
 }

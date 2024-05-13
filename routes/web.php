@@ -32,6 +32,7 @@ Route::prefix('admin')->middleware(['is_admin'])->group(function () {
     Route::resource('user', UserController::class);
     Route::resource('teacher_course', TeacherCourseController::class);
     Route::get('/teacher_list', [UserController::class, 'teacherList'])->name('teacher.index');
+    Route::get('/student_list', [UserController::class, 'studentList'])->name('student.index');
 });
 Route::prefix('teacher')->middleware(['is_teacher'])->group(function () {
     Route::get('/', function () {

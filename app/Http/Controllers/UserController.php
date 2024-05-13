@@ -95,7 +95,19 @@ class UserController extends Controller
     public function teacherList()
     {
         $teachers = User::where('type', 'teacher')->get();
+        // foreach ($teachers as $teacher) {
+        //     return $teacher->getOneTeacherWithCourses($teacher->id);
+        //     foreach ($teacher->getOneTeacherWithCourses($teacher->id) as $courses) {
+        //         return $courses;
+        //     }
+        // }
 
         return view('admins.teacher.teacher_list', compact('teachers'));
+    }
+    public function studentList()
+    {
+        $students = User::where('type', 'student')->get();
+
+        return view('admins.student.student_list', compact('students'));
     }
 }

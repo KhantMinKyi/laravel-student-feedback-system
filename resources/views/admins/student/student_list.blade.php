@@ -10,13 +10,13 @@
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-6 py-3">
-                        Teacher name
+                        Student name
                     </th>
                     <th scope="col" class="px-6 py-3">
                         phone
                     </th>
                     <th scope="col" class="px-10 py-3">
-                        Teaching Courses
+                        Year
                     </th>
                     <th scope="col" class="px-10 py-3 text-end">
 
@@ -25,29 +25,24 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($teachers as $teacher)
+                @foreach ($students as $student)
                     <tr
                         class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ $teacher->name }}
+                            {{ $student->name }}
                         </th>
                         <td class="px-6 py-4">
-                            {{ $teacher->phone }}
+                            {{ $student->phone }}
                         </td>
                         <td class="px-6 py-4">
-                            <?php
-                            $teacher_course = $teacher->getOneTeacherWithCourses($teacher->id);
-                            ?>
-                            @foreach ($teacher_course->teacher_courses as $teacher_course)
-                                {{ $teacher_course->courses->course_name }} <br>
-                            @endforeach
+                            {{ $student->phone }}
                         </td>
                         <td class="px-6 py-4 text-end">
-                            <a href="{{ route('user.edit', ['user' => $teacher->id]) }}"
+                            <a href="{{ route('user.edit', ['user' => $student->id]) }}"
                                 class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900">Edit</a>
                         </td>
                         <td>
-                            <form action="{{ route('user.destroy', ['user' => $teacher->id]) }}" method="POST">
+                            <form action="{{ route('user.destroy', ['user' => $student->id]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"

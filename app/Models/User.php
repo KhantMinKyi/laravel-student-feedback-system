@@ -56,4 +56,17 @@ class User extends Authenticatable
     {
         return User::where('type', 'teacher')->get();
     }
+    public static function getOneTeacherWithCourses($id)
+    {
+        $teacher = User::find($id);
+        $data = new \stdClass;
+
+        $teacher_courses = TeacherCourse::with('courses')->where('teacher_id', $teacher->id)->get();
+        if (count($teacher_courses) > 0) {
+            $data->teacher = $teacher;
+            $data->teacher_courses = $teacher_courses;
+        }
+
+        return $data;
+    }
 }

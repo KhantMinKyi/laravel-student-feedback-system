@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\FeedbackTemplateController;
 use App\Http\Controllers\StudentYearController;
 use App\Http\Controllers\TeacherCourseController;
 use App\Http\Controllers\TestController;
@@ -33,6 +34,7 @@ Route::prefix('admin')->middleware(['is_admin'])->group(function () {
     Route::resource('user', UserController::class);
     Route::resource('teacher_course', TeacherCourseController::class);
     Route::resource('student_year', StudentYearController::class);
+    Route::resource('feedback_template', FeedbackTemplateController::class);
     Route::get('/teacher_list', [UserController::class, 'teacherList'])->name('teacher.list');
     Route::get('/student_list', [UserController::class, 'studentList'])->name('student.list');
 });

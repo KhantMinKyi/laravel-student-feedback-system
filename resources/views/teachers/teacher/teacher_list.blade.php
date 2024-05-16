@@ -1,4 +1,4 @@
-@extends('admins.layout')
+@extends('teachers.layout')
 @section('content')
     <div class="flex flex-row-reverse mb-2">
 

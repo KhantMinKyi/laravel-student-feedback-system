@@ -38,9 +38,11 @@
                             <?php
                             $teacher_course = $teacher->getOneTeacherWithCourses($teacher->id);
                             ?>
-                            @foreach ($teacher_course->teacher_courses as $teacher_course)
-                                {{ $teacher_course->courses->course_name }} <br>
-                            @endforeach
+                            @if (isset($teacher_course->teacher_courses))
+                                @foreach ($teacher_course->teacher_courses as $teacher_course)
+                                    {{ $teacher_course->courses->course_name }} <br>
+                                @endforeach
+                            @endif
                         </td>
                         <td class="px-6 py-4 text-end">
                             <a href="{{ route('user.edit', ['user' => $teacher->id]) }}"

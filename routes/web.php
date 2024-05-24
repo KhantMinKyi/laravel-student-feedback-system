@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\FeedbackTemplateController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\StudentYearController;
 use App\Http\Controllers\TeacherCourseController;
 use App\Http\Controllers\TestController;
@@ -50,10 +52,9 @@ Route::prefix('teacher')->middleware(['is_teacher'])->group(function () {
 
 // Student
 Route::prefix('student')->middleware(['is_student'])->group(function () {
-    Route::get('/', function () {
-        return view('students.dashboard');
-    })->name('student.index');
+    Route::get('/', [LocationController::class, 'studentDashboard'])->name('student.index');
     Route::get('/teacher_list', [UserController::class, 'teacherList'])->name('student.teacher.index');
+    Route::resource('feedback', FeedbackController::class);
 });
 Route::post('/text', [TestController::class, 'index']);
 Route::post('/login', [AuthController::class, 'login']);

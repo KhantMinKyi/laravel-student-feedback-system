@@ -55,6 +55,7 @@ Route::prefix('student')->middleware(['is_student'])->group(function () {
     Route::get('/', [LocationController::class, 'studentDashboard'])->name('student.index');
     Route::get('/teacher_list', [UserController::class, 'teacherList'])->name('student.teacher.index');
     Route::resource('feedback', FeedbackController::class);
+    Route::get('/feedback_list', [FeedbackController::class, 'studentFeedback'])->name('student.feedback.index');
 });
 Route::post('/text', [TestController::class, 'index']);
 Route::post('/login', [AuthController::class, 'login']);

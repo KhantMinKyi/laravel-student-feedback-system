@@ -17,7 +17,10 @@ class LocationController extends Controller
         $teacher_count = User::where('type', 'teacher')->get()->count();
         $student_count = User::where('type', 'student')->get()->count();
         $current_learning_courses = StudentYear::GetCurrentTeachingTeachers();
-        // return $current_learning_courses;
-        return view('students.dashboard', compact(['teacher_count', 'student_count', 'current_learning_courses']));
+        $current_year = StudentYear::where('learning_year', Carbon::now()->year)
+            ->where('student_id', Auth::user()->id)
+            ->latest()->first();
+        // return $current_year;
+        return view('students.dashboard', compact(['teacher_count', 'student_count', 'current_learning_courses', 'current_year']));
     }
 }

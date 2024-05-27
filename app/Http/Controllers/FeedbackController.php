@@ -126,4 +126,10 @@ class FeedbackController extends Controller
     {
         //
     }
+    public function studentFeedback()
+    {
+        $feedbacks = Feedback::with('teacher', 'course', 'year')->where('student_id', Auth::user()->id)->orderBy('feedback_date', 'desc')->get();
+        // return $feedbacks;
+        return view('students.feedback.feedback_list', compact('feedbacks'));
+    }
 }

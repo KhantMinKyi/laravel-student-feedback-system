@@ -21,4 +21,20 @@ class Feedback extends Model
         'feedback_date',
         'feedback_total_percentage',
     ];
+    public function teacher()
+    {
+        return $this->belongsTo(User::class, 'teacher_id');
+    }
+    public function student()
+    {
+        return $this->belongsTo(User::class, 'student_id');
+    }
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'course_id');
+    }
+    public function year()
+    {
+        return $this->belongsTo(StudentYear::class, 'year_id');
+    }
 }

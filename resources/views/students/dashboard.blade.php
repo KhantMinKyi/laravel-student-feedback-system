@@ -48,32 +48,18 @@
             </tbody>
         </table>
     </div>
-    <div class="grid grid-cols-2 gap-4 mb-4">
+    <div class="grid grid-cols-3 gap-4 mb-4">
         <div class="flex flex-col items-center justify-center h-24 rounded-lg bg-red-100 dark:bg-gray-800">
             <div class="text-lg font-bold">Current Year</div>
             <div class="text-xl font-bold">{{ $current_learning_courses[0]->teaching_year }}</div>
         </div>
+        <div class="flex flex-col items-center justify-center h-24 rounded-lg bg-green-100 dark:bg-gray-800">
+            <div class="text-lg font-bold">Current Role Number</div>
+            <div class="text-xl font-bold">{{ $current_year->role_number }}</div>
+        </div>
         <div class="flex flex-col items-center justify-center h-24 rounded-lg bg-teal-100 dark:bg-gray-800">
             <div class="text-lg font-bold">Total Learning Subject</div>
             <div class="text-xl font-bold">{{ count($current_learning_courses) }}</div>
-        </div>
-        <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-            <p class="text-2xl text-gray-400 dark:text-gray-500">
-                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 18 18">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 1v16M1 9h16" />
-                </svg>
-            </p>
-        </div>
-        <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-            <p class="text-2xl text-gray-400 dark:text-gray-500">
-                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 18 18">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 1v16M1 9h16" />
-                </svg>
-            </p>
         </div>
     </div>
     <div class="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">

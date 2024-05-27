@@ -46,6 +46,7 @@ Route::prefix('teacher')->middleware(['is_teacher'])->group(function () {
     Route::get('/', function () {
         return view('teachers.dashboard');
     })->name('teacher.index');
+    Route::get('/teacher_profile', [LocationController::class, 'teacherProfile'])->name('teacher.profile');
     Route::get('/teacher_list', [UserController::class, 'teacherList'])->name('teacher.teacher.index');
     Route::get('/student_list', [UserController::class, 'studentList'])->name('teacher.student.index');
 });
@@ -53,6 +54,7 @@ Route::prefix('teacher')->middleware(['is_teacher'])->group(function () {
 // Student
 Route::prefix('student')->middleware(['is_student'])->group(function () {
     Route::get('/', [LocationController::class, 'studentDashboard'])->name('student.index');
+    Route::get('/student_profile', [LocationController::class, 'studentProfile'])->name('student.profile');
     Route::get('/teacher_list', [UserController::class, 'teacherList'])->name('student.teacher.index');
     Route::resource('feedback', FeedbackController::class);
     Route::get('/feedback_list', [FeedbackController::class, 'studentFeedback'])->name('student.feedback.index');

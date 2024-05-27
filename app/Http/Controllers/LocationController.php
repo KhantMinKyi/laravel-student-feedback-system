@@ -23,4 +23,25 @@ class LocationController extends Controller
         // return $current_year;
         return view('students.dashboard', compact(['teacher_count', 'student_count', 'current_learning_courses', 'current_year']));
     }
+
+    public function studentProfile()
+    {
+        $user = User::with('student_year')->where('id', Auth::user()->id)->first();
+        if (!$user) {
+            return redirect()->back();
+        }
+        // return $user;
+        return view('students.account.user_profile', compact('user'));
+    }
+    public function teacherProfile()
+    {
+        $user_id = Auth::user()->id;
+        $user = User::where('id', $user_id)->first();
+        if (!$user) {
+            return redirect()->back();
+        }
+        $teaching_subjects = User::getOneTeacherWithCourses($user_id);
+        // return $teaching_subjects;
+        return view('teachers.account.user_profile', compact('user', 'teaching_subjects'));
+    }
 }

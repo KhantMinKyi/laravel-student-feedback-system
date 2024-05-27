@@ -19,6 +19,8 @@
                         <input type="hidden" name="course_id" value="{{ $course->id }}">
                         <input type="hidden" name="teacher_id" value="{{ $course->teacher->id }}">
                         <input type="hidden" name="student_id" value="{{ $student_year->student_id }}">
+                        <input type="hidden" name="feedback_template_id"
+                            value="{{ $feedback_template->feedback_template_id }}">
                         <div class="mb-5">
                             <label for="name"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ $question }}</label>

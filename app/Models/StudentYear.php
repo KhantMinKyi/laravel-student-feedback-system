@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -35,5 +36,18 @@ class StudentYear extends Model
         } else {
             return null;
         }
+    }
+
+    public static function GetCurrentTeachingTeachers()
+    {
+        $current_year = StudentYear::where('learning_year', Carbon::now()->year)
+            ->where('student_id', Auth::user()->id)
+            ->latest()->first();
+        $year = Year::with('courses')->where('id', $current_year->year_id)->first();
+        $teachers = [];
+        foreach ($year->courses as $course) {
+            $teachers[] = TeacherCourse::with(['teacher', 'courses'])->where('course_id', $course->id)->where('teaching_year', Carbon::now()->year)->first();
+        }
+        return $teachers;
     }
 }

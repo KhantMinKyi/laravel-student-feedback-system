@@ -9,7 +9,11 @@
 </head>
 
 <body>
-    {{ $text }}
+    <form action="/test" method="POST">
+        @csrf
+        <input type="text" name="text" id="">
+        <input type="submit" name="" id="" value="submit">
+    </form>
 </body>
 
 </html>

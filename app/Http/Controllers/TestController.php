@@ -9,6 +9,10 @@ class TestController extends Controller
 {
     public function index(Request $request)
     {
+        return view('test');
+    }
+    public function post(Request $request)
+    {
         $text = $request->text;
         $analyzer = new Analyzer();
         $output = $analyzer->getSentiment($text);

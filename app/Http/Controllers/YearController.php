@@ -16,7 +16,7 @@ class YearController extends Controller
      */
     public function index()
     {
-        $years = Year::orderBy('year_name', 'asc')->paginate(10);
+        $years = Year::orderBy('year_name', 'asc')->get();
         return view('admins.setting.year.year_list', compact('years'));
     }
 

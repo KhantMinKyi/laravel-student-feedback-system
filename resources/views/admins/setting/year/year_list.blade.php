@@ -12,9 +12,9 @@
                     <th scope="col" class="px-6 py-3">
                         Year name
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    {{-- <th scope="col" class="px-6 py-3">
                         Semester
-                    </th>
+                    </th> --}}
                     <th scope="col" class="px-10 py-3 text-end">
 
                     </th>
@@ -28,9 +28,9 @@
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{ $year->year_name }}
                         </th>
-                        <td class="px-6 py-4">
+                        {{-- <td class="px-6 py-4">
                             {{ $year->semester }}
-                        </td>
+                        </td> --}}
                         <td class="px-6 py-4 text-end">
                             <a href="{{ route('year.edit', ['year' => $year->id]) }}"
                                 class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900">Edit</a>

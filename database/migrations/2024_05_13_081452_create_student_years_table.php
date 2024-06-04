@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('year_id')->constrained('years')->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('role_number');
             $table->year('learning_year');
+            $table->year('learning_year_second_semester');
             $table->timestamps();
         });
     }

@@ -17,6 +17,7 @@ class StudentYear extends Model
         'year_id',
         'role_number',
         'learning_year',
+        'learning_year_second_semester',
     ];
     public function student()
     {

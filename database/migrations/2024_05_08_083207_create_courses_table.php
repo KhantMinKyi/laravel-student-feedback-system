@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('course_name', 100);
             $table->foreignId('year_id')->constrained('years')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->integer('semester');
             $table->timestamps();
         });
     }

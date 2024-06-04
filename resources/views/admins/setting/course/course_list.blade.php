@@ -35,7 +35,7 @@
                             {{ $course->year->year_name }}
                         </td>
                         <td class="px-6 py-4 text-center">
-                            {{ $course->year->semester }}
+                            {{ $course->semester }}
                         </td>
                         <td class="px-6 py-4 text-end">
                             <a href="{{ route('course.edit', ['course' => $course->id]) }}"

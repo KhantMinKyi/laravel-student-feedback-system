@@ -35,7 +35,7 @@ class YearController extends Controller
     {
         $validated = $request->validate([
             'year_name' => 'required|string',
-            'semester' => 'required|numeric',
+            // 'semester' => 'required|numeric',
         ]);
         Year::create($validated);
         return redirect()->route('year.index');
@@ -68,7 +68,7 @@ class YearController extends Controller
     {
         $validated = $request->validate([
             'year_name' => 'required|string',
-            'semester' => 'required|numeric'
+            // 'semester' => 'required|numeric'
         ]);
         $year = Year::find($id);
         if (!$year) {

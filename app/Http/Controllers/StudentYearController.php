@@ -15,6 +15,7 @@ class StudentYearController extends Controller
     public function index()
     {
         $student_years = StudentYear::with('student', 'year')->orderBy('learning_year', 'desc')->get();
+        // return $student_years;
         return view('admins.setting.student_year.student_year_list', compact('student_years'));
     }
 
@@ -38,8 +39,14 @@ class StudentYearController extends Controller
             'year_id' => 'required|numeric',
             'role_number' => 'required|string',
             'learning_year' => 'required|string',
+            'learning_year_second_semester' => 'required|string',
         ]);
-        StudentYear::create($validated);
+        $selected_year = Year::find($validated['year_id']);
+        $years = Year::where('year_name', 'like', '%' . $selected_year->year_name . '%')->get();
+        foreach ($years as $year) {
+            $validated['year_id'] = $year->id;
+            StudentYear::create($validated);
+        }
         return redirect()->route('student_year.index');
     }
 
@@ -79,6 +86,7 @@ class StudentYearController extends Controller
             'year_id' => 'required|numeric',
             'role_number' => 'required|string',
             'learning_year' => 'required|string',
+            'learning_year_second_semester' => 'required|string',
         ]);
         $student_year->update($validated);
         return redirect()->route('student_year.index');

@@ -23,12 +23,11 @@
                     </select>
                 </div>
                 <div class="mb-5">
-                    <label for="year_id"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Semester</label>
+                    <label for="year_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Year</label>
                     <select id="year_id" name="year_id"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         @foreach ($years as $year)
-                            <option value="{{ $year->id }}">{{ $year->year_name }} (Semester - {{ $year->semester }})
+                            <option value="{{ $year->id }}">{{ $year->year_name }}
                             </option>
                         @endforeach
                     </select>
@@ -42,8 +41,16 @@
                 </div>
                 <div class="mb-5">
                     <label for="learning_year" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Learning
-                        Year</label>
+                        Year (1st Semester)</label>
                     <input type="text" name="learning_year"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Enter Attending Year" required />
+                </div>
+                <div class="mb-5">
+                    <label for="learning_year_second_semester"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Learning
+                        Year (2nd Semester)</label>
+                    <input type="text" name="learning_year_second_semester"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Enter Attending Year" required />
                 </div>

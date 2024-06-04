@@ -11,6 +11,7 @@ class Course extends Model
     protected $fillable = [
         'course_name',
         'year_id',
+        'semester',
     ];
     public function year()
     {

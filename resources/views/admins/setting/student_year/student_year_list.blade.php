@@ -16,10 +16,10 @@
                         Role Number
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Semester
+                        Year
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Attending Year
+                        Academic Year
                     </th>
                     <th scope="col" class="px-10 py-3 text-end">
 
@@ -39,10 +39,10 @@
                             {{ $student_year->role_number }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $student_year->year->year_name }} ( Semester - {{ $student_year->year->semester }})
+                            {{ $student_year->year->year_name }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $student_year->learning_year }}
+                            {{ $student_year->learning_year }} - {{ $student_year->learning_year_second_semester }}
                         </td>
                         <td class="px-6 py-4 text-end">
                             <a href="{{ route('student_year.edit', ['student_year' => $student_year->student_year_id]) }}"

@@ -34,6 +34,7 @@ class CourseController extends Controller
         $validated = $request->validate([
             'course_name' => 'required|string',
             'year_id' => 'required|numeric',
+            'semester' => 'required|numeric',
         ]);
         Course::create($validated);
         return redirect()->route('course.index');
@@ -67,7 +68,8 @@ class CourseController extends Controller
     {
         $validated = $request->validate([
             'course_name' => 'required|string',
-            'year_id' => 'required|numeric'
+            'year_id' => 'required|numeric',
+            'semester' => 'required|numeric',
         ]);
         $course = Course::find($id);
         if (!$course) {

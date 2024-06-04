@@ -40,7 +40,10 @@
                             ?>
                             @if (isset($teacher_course->teacher_courses))
                                 @foreach ($teacher_course->teacher_courses as $teacher_course)
-                                    {{ $teacher_course->courses->course_name }} <br>
+                                    {{ $teacher_course->courses->course_name }} -
+                                    {{ $teacher_course->courses->year->year_name }}
+                                    (Semester - {{ $teacher_course->courses->semester }})
+                                    <br>
                                 @endforeach
                             @endif
                         </td>

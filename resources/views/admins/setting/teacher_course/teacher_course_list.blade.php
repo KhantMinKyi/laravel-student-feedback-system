@@ -37,13 +37,14 @@
                             @foreach ($teacher['teacher_courses'] as $teacher_course)
                                 <b>{{ $teacher_course->courses->course_name }} </b>
                                 ({{ $teacher_course->courses->year->year_name }})
-                                (Semester{{ $teacher_course->courses->year->semester }})
+                                ( Semester {{ $teacher_course->courses->semester }} )
                                 <br>
                             @endforeach
                         </td>
                         <td class="px-6 py-4">
                             @foreach ($teacher['teacher_courses'] as $teacher_course)
-                                {{ $teacher_course->teaching_year }} <br>
+                                {{ $teacher_course->teaching_year }} - {{ $teacher_course->teaching_year_second_semester }}
+                                <br>
                             @endforeach
                         </td>
                         <td class="px-6 py-4 text-end">

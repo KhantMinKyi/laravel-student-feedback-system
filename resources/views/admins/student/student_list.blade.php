@@ -39,7 +39,7 @@
                         </td>
                         <td class="px-6 py-4 font-bold">
                             @foreach ($student->student_year as $year)
-                                {{ $year->year->year_name }} (Semester - {{ $year->year->semester }}) <br>
+                                {{ $year->year->year_name }} <br>
                             @endforeach
                         </td>
                         <td class="px-6 py-4 font-bold">

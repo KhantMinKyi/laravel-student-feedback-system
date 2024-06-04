@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('course_id');
             $table->integer('teacher_id');
             $table->year('teaching_year');
+            $table->year('teaching_year_second_semester');
             $table->timestamps();
         });
     }

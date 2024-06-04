@@ -40,12 +40,14 @@ class TeacherCourseController extends Controller
             'teacher_id' => 'required|string',
             'teaching_course_ids' => 'required|array',
             'teaching_year' => 'required|string',
+            'teaching_year_second_semester' => 'required|string',
         ]);
         // return $validated['teaching_course_ids'];
         foreach ($validated['teaching_course_ids'] as $courses) {
             TeacherCourse::create([
                 'teacher_id' => $validated['teacher_id'],
                 'teaching_year' => $validated['teaching_year'],
+                'teaching_year_second_semester' => $validated['teaching_year_second_semester'],
                 'course_id' => $courses,
             ]);
         }
@@ -85,11 +87,14 @@ class TeacherCourseController extends Controller
             if (strpos($key, 'course_id_') === 0) {
                 $courseId = substr($key, strlen('course_id_'));
                 $teachingYear = $requestData['teaching_year_' . $courseId];
+                $teachingYearSecondSemester = $requestData['teaching_year_second_semester_' . $courseId];
+                // return $request;
                 $courses[$courseId] = [
                     'course_id' => $value,
-                    'teaching_year' => $teachingYear
+                    'teaching_year' => $teachingYear,
+                    'teaching_year_second_semester' => $teachingYearSecondSemester,
                 ];
-                unset($requestData['course_id_' . $courseId], $requestData['teaching_year_' . $courseId]);
+                unset($requestData['course_id_' . $courseId], $requestData['teaching_year_' . $courseId], $requestData['teaching_year_second_semester_' . $courseId]);
             }
         }
 
@@ -105,7 +110,8 @@ class TeacherCourseController extends Controller
                     [
                         'teacher_id' => $teacherId,
                         'course_id' => $course['course_id'],
-                        'teaching_year' => $course['teaching_year']
+                        'teaching_year' => $course['teaching_year'],
+                        'teaching_year_second_semester' => $course['teaching_year_second_semester']
                     ]
                 );
             }

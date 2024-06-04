@@ -13,6 +13,7 @@ class TeacherCourse extends Model
         'course_id',
         'teacher_id',
         'teaching_year',
+        'teaching_year_second_semester',
     ];
     public function teacher()
     {

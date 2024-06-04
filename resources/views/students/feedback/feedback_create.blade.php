@@ -1,5 +1,11 @@
 @extends('students.layout')
 @section('content')
+    @if (count($student_year->year->courses) < 1)
+        <div class="flex justify-center flex-col items-center">
+            <span class="text-xl font-bold text-orange-600"> You Have noting to Give Feedback This Term ! </span>
+            <span class="text-lg font-semibold text-blue-300 mt-4"> Come Back Next Term ! </span>
+        </div>
+    @endif
     @foreach ($student_year->year->courses as $index => $course)
         <div class="flex justify-center my-4">
             <div

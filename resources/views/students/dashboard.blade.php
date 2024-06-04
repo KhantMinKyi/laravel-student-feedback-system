@@ -28,6 +28,9 @@
                         Subject
                     </th>
                     <th scope="col" class="px-6 py-3">
+                        Teaching Semester
+                    </th>
+                    <th scope="col" class="px-6 py-3">
                         Teacher
                     </th>
                     <th scope="col" class="px-10 py-3">
@@ -37,13 +40,16 @@
             </thead>
             <tbody>
                 @foreach ($current_learning_courses as $no => $current_learning_course)
-                    <tr
-                        class=" border-b border-green-100 dark:bg-green-800 dark:border-green-700 hover:bg-green-100 dark:hover:bg-gray-600">
-                        <td class="px-6 py-4">{{ $no + 1 }}</td>
-                        <td class="px-6 py-4">{{ $current_learning_course->courses->course_name }}</td>
-                        <td class="px-6 py-4">{{ $current_learning_course->teacher->name }}</td>
-                        <td class="px-6 py-4">{{ $current_learning_course->teacher->phone }}</td>
-                    </tr>
+                    @isset($current_learning_course)
+                        <tr
+                            class=" border-b border-green-100 dark:bg-green-800 dark:border-green-700 hover:bg-green-100 dark:hover:bg-gray-600">
+                            <td class="px-6 py-4">{{ $no + 1 }}</td>
+                            <td class="px-6 py-4">{{ $current_learning_course->courses->course_name }}</td>
+                            <td class="px-6 py-4">Semester - {{ $current_learning_course->courses->semester }}</td>
+                            <td class="px-6 py-4">{{ $current_learning_course->teacher->name }}</td>
+                            <td class="px-6 py-4">{{ $current_learning_course->teacher->phone }}</td>
+                        </tr>
+                    @endisset
                 @endforeach
             </tbody>
         </table>
@@ -51,7 +57,8 @@
     <div class="grid grid-cols-3 gap-4 mb-4">
         <div class="flex flex-col items-center justify-center h-24 rounded-lg bg-red-100 dark:bg-gray-800">
             <div class="text-lg font-bold">Current Year</div>
-            <div class="text-xl font-bold">{{ $current_learning_courses[0]->teaching_year }}</div>
+            <div class="text-xl font-bold">{{ $current_learning_courses[0]->teaching_year }} -
+                {{ $current_learning_courses[0]->teaching_year_second_semester }}</div>
         </div>
         <div class="flex flex-col items-center justify-center h-24 rounded-lg bg-green-100 dark:bg-gray-800">
             <div class="text-lg font-bold">Current Role Number</div>

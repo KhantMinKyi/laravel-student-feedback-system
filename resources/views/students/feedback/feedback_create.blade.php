@@ -19,6 +19,9 @@
                         <input type="hidden" name="course_id" value="{{ $course->id }}">
                         <input type="hidden" name="teacher_id" value="{{ $course->teacher->id }}">
                         <input type="hidden" name="student_id" value="{{ $student_year->student_id }}">
+                        <input type="hidden" name="learning_year" value="{{ $student_year->learning_year }}">
+                        <input type="hidden" name="learning_year_second_semester"
+                            value="{{ $student_year->learning_year_second_semester }}">
                         <input type="hidden" name="feedback_template_id"
                             value="{{ $feedback_template->feedback_template_id }}">
                         <div class="mb-5">
@@ -27,23 +30,23 @@
                             <div class="grid grid-cols-5">
                                 <div class="flex flex-col justify-center items-center">
                                     <input type="radio" name="question_{{ $key }}" required value="very_good" />
-                                    <span>Very Good</span>
+                                    <span>Strongly Agree</span>
                                 </div>
                                 <div class="flex flex-col justify-center items-center">
                                     <input type="radio" name="question_{{ $key }}" required value="good" />
-                                    <span>Good</span>
+                                    <span>Agree</span>
                                 </div>
                                 <div class="flex flex-col justify-center items-center">
                                     <input type="radio" name="question_{{ $key }}" required value="normal" />
-                                    <span>Normal</span>
+                                    <span>Neutral</span>
                                 </div>
                                 <div class="flex flex-col justify-center items-center">
                                     <input type="radio" name="question_{{ $key }}" required value="not_bad" />
-                                    <span>Not Bad</span>
+                                    <span>Disagree</span>
                                 </div>
                                 <div class="flex flex-col justify-center items-center">
                                     <input type="radio" name="question_{{ $key }}" required value="bad" />
-                                    <span>Bad</span>
+                                    <span>Strongly Disagree</span>
                                 </div>
                             </div>
                             <hr class="my-4">

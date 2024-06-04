@@ -28,7 +28,10 @@ class FeedbackController extends Controller
     {
         $feedback_template = FeedbackTemplate::latest()->first();
         $student_year = StudentYear::getStudentYearWithCourseCount();
-
+        // foreach ($student_year->year->courses as $index => $course) {
+        //     if ($course->semester == 1) {
+        //     }
+        // }
         foreach ($student_year->year->courses as $index => $course) {
             $teacher_course = TeacherCourse::where('course_id', $course->id)
                 ->where('teaching_year', $student_year->learning_year)->first();
@@ -41,8 +44,15 @@ class FeedbackController extends Controller
                 ->where('teacher_id', $course->teacher->id)
                 ->where('student_id', $student_year->student_id)
                 ->get();
+            // return $course;
             if (count($feedbacks) > 0) {
                 unset($student_year->year->courses[$index]);
+            } else if ($course->semester == 1 && !count($feedbacks) > 0) {
+                foreach ($student_year->year->courses as $unset_index => $unset_course) {
+                    if ($unset_course->semester === 2) {
+                        unset($student_year->year->courses[$unset_index]);
+                    }
+                }
             }
         }
 
@@ -57,13 +67,15 @@ class FeedbackController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'year_id'                       => 'required|integer',
-            'course_id'                     => 'required|integer',
-            'teacher_id'                    => 'required|integer',
-            'student_id'                    => 'required|integer',
-            'feedback_template_id'          => 'required|integer',
-            'feedback_strength_weakness'    => 'nullable|string',
-            'feedback_comment'              => 'nullable|string',
+            'year_id'                                       => 'required|integer',
+            'course_id'                                     => 'required|integer',
+            'teacher_id'                                    => 'required|integer',
+            'student_id'                                    => 'required|integer',
+            'feedback_template_id'                          => 'required|integer',
+            'feedback_strength_weakness'                    => 'nullable|string',
+            'feedback_comment'                              => 'nullable|string',
+            'learning_year'                                 => 'nullable|string',
+            'learning_year_second_semester'                 => 'nullable|string',
         ]);
         $feedback_template = FeedbackTemplate::find($validated['feedback_template_id']);
         // return $validated;
@@ -100,7 +112,21 @@ class FeedbackController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $feedback = Feedback::with('teacher', 'student', 'course', 'year')->find($id);
+        if (!$feedback) {
+            return redirect()->back();
+        }
+        $questions = explode(',', $feedback->feedback_questions);
+        $answers = explode(',', $feedback->feedback_answers);
+        $data_array = [];
+        foreach ($questions as $key => $question) {
+            $data_array[] = [
+                'feedback_question' => $question,
+                'feedback_answer' => $answers[$key],
+            ];
+        }
+        // return $data_array;
+        return view('students.feedback.feedback_detail', compact('feedback', 'data_array'));
     }
 
     /**

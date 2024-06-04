@@ -38,10 +38,10 @@
                             {{ $feedback->feedback_date }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $feedback->year->learning_year }}
+                            {{ $feedback->year->learning_year }} - {{ $feedback->year->learning_year_second_semester }}
                         </td>
                         <td class="px-6 py-4">
-                            <a href="#">
+                            <a href="{{ route('feedback.show', ['feedback' => $feedback->feedback_id]) }}">
                                 <i class="fa-regular fa-eye"></i>
                             </a>
                         </td>

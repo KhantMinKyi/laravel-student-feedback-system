@@ -23,6 +23,8 @@ return new class extends Migration
             $table->foreignId('year_id')->constrained('years')->cascadeOnUpdate()->cascadeOnDelete();
             $table->date('feedback_date');
             $table->integer('feedback_total_percentage')->default(0);
+            $table->year('learning_year');
+            $table->year('learning_year_second_semester');
             $table->timestamps();
         });
     }

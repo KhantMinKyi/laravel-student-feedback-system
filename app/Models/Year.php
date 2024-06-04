@@ -15,7 +15,7 @@ class Year extends Model
     ];
     public function courses()
     {
-        return $this->hasMany(Course::class);
+        return $this->hasMany(Course::class)->orderBy('semester', 'asc');
     }
     public function student_year()
     {

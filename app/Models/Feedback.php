@@ -20,6 +20,8 @@ class Feedback extends Model
         'year_id',
         'feedback_date',
         'feedback_total_percentage',
+        'learning_year',
+        'learning_year_second_semester',
     ];
     public function teacher()
     {

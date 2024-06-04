@@ -14,7 +14,7 @@ class StudentYearController extends Controller
      */
     public function index()
     {
-        $student_years = StudentYear::with('student', 'year')->orderBy('learning_year', 'desc')->get();
+        $student_years = StudentYear::with('student', 'year')->orderBy('learning_year_second_semester', 'desc')->get();
         // return $student_years;
         return view('admins.setting.student_year.student_year_list', compact('student_years'));
     }

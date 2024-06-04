@@ -29,7 +29,7 @@ class StudentYear extends Model
     }
     public static function getStudentYearWithCourseCount()
     {
-        $student_year = StudentYear::with('year')->where('student_id', Auth::user()->id)->orderBy('learning_year', 'desc')->first();
+        $student_year = StudentYear::with('year')->where('student_id', Auth::user()->id)->orderBy('learning_year_second_semester', 'desc')->first();
         if ($student_year) {
             $courses_count = Course::where('year_id', $student_year->year_id)->get()->count();
             $student_year->courses_count = $courses_count;
@@ -41,13 +41,17 @@ class StudentYear extends Model
 
     public static function GetCurrentTeachingTeachers()
     {
-        $current_year = StudentYear::where('learning_year', Carbon::now()->year)
-            ->where('student_id', Auth::user()->id)
+        $current_year = StudentYear::where('student_id', Auth::user()->id)
+            // ->where('learning_year', Carbon::now()->year)
+            ->orderBy('learning_year_second_semester', 'desc')
             ->latest()->first();
         $year = Year::with('courses')->where('id', $current_year->year_id)->first();
+        // return $year;
         $teachers = [];
         foreach ($year->courses as $course) {
-            $teachers[] = TeacherCourse::with(['teacher', 'courses'])->where('course_id', $course->id)->where('teaching_year', Carbon::now()->year)->first();
+            $teachers[] = TeacherCourse::with(['teacher', 'courses'])->where('course_id', $course->id)
+                // ->where('teaching_year', Carbon::now()->year)
+                ->first();
         }
         return $teachers;
     }

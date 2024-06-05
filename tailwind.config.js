@@ -10,5 +10,10 @@ export default {
     theme: {
         extend: {},
     },
-    plugins: [require("flowbite/plugin"), require("preline/plugin")],
+    plugins: [
+        require("flowbite/plugin")({
+            charts: true,
+        }),
+        require("preline/plugin"),
+    ],
 };

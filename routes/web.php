@@ -43,9 +43,7 @@ Route::prefix('admin')->middleware(['is_admin'])->group(function () {
 
 // Teacher
 Route::prefix('teacher')->middleware(['is_teacher'])->group(function () {
-    Route::get('/', function () {
-        return view('teachers.dashboard');
-    })->name('teacher.index');
+    Route::get('/', [LocationController::class, 'teacherDashboard'])->name('teacher.index');
     Route::get('/teacher_profile', [LocationController::class, 'teacherProfile'])->name('teacher.profile');
     Route::get('/teacher_list', [UserController::class, 'teacherList'])->name('teacher.teacher.index');
     Route::get('/student_list', [UserController::class, 'studentList'])->name('teacher.student.index');

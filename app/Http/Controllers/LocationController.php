@@ -28,6 +28,7 @@ class LocationController extends Controller
                     'course_id' => $data->course->id,
                     'course_name' => $data->course->course_name,
                     'feedback_total_percentage' => $data->feedback_total_percentage,
+                    'feedback_total_percentage_comment' => $data->feedback_total_percentage_comment,
                 ]);
             }
             array_push($data_array, $feedback_data_array);
@@ -38,13 +39,15 @@ class LocationController extends Controller
         foreach ($data_array as $year) {
             $sums = [];
             $counts = [];
-
+            $comment_sums = [];
             foreach ($year['data'] as $item) {
                 if (isset($sums[$item['course_id']])) {
                     $sums[$item['course_id']] += $item['feedback_total_percentage'];
+                    $comment_sums[$item['course_id']] += $item['feedback_total_percentage_comment'];
                     $counts[$item['course_id']] += 1;
                 } else {
                     $sums[$item['course_id']] = $item['feedback_total_percentage'];
+                    $comment_sums[$item['course_id']] = $item['feedback_total_percentage_comment'];
                     $counts[$item['course_id']] = 1;
                 }
             }
@@ -56,12 +59,14 @@ class LocationController extends Controller
             // calculate the average and arrange the data
             foreach ($sums as $course_id => $total_feedback_percentage) {
                 $average_feedback_percentage = $total_feedback_percentage / $counts[$course_id];
+                $average_feedback_percentage_comment = $comment_sums[$course_id] / $counts[$course_id];
                 $course = Course::find($course_id);
                 $yearResult["data"][] = [
                     'course_id' => $course_id,
-                    'course_name' => $course ? $course->course_name : 'Unknown',
+                    'course_name' => $course ? $course->course_name . ' ( Semester - ' . $course->semester . ')'  : 'Unknown',
                     'total_feedback_percentage' => $total_feedback_percentage,
-                    'average_feedback_percentage' => $average_feedback_percentage
+                    'average_feedback_percentage' => $average_feedback_percentage,
+                    'average_feedback_percentage_comment' => $average_feedback_percentage_comment,
                 ];
             }
 
@@ -95,6 +100,7 @@ class LocationController extends Controller
             }
         );
         $yearlyData = $this->getTeacherPersonalChart($feedbacks);
+        // return $yearlyData;
         return view('teachers.dashboard', compact(['teacher', 'teacher_count', 'student_count', 'yearlyData', 'teacher_courses']));
     }
 

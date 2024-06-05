@@ -1,4 +1,4 @@
-@extends('students.layout')
+@extends('teachers.layout')
 
 @section('content')
     <div class="grid grid-cols-3 gap-4 mb-4">
@@ -33,7 +33,7 @@
                         Semester
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Teaching Year
+                        Academic Year
                     </th>
                 </tr>
             </thead>
@@ -44,8 +44,9 @@
                         <td class="px-6 py-4">{{ $no + 1 }}</td>
                         <td class="px-6 py-4">{{ $teaching_subject->courses->course_name }}</td>
                         <td class="px-6 py-4">{{ $teaching_subject->courses->year->year_name }}</td>
-                        <td class="px-6 py-4">Semester - {{ $teaching_subject->courses->year->semester }}</td>
-                        <td class="px-6 py-4">{{ $teaching_subject->teaching_year }}</td>
+                        <td class="px-6 py-4">Semester - {{ $teaching_subject->courses->semester }}</td>
+                        <td class="px-6 py-4">{{ $teaching_subject->teaching_year }} -
+                            {{ $teaching_subject->teaching_year_second_semester }}</td>
                     </tr>
                 @endforeach
             </tbody>

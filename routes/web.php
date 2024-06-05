@@ -47,6 +47,8 @@ Route::prefix('teacher')->middleware(['is_teacher'])->group(function () {
     Route::get('/teacher_profile', [LocationController::class, 'teacherProfile'])->name('teacher.profile');
     Route::get('/teacher_list', [UserController::class, 'teacherList'])->name('teacher.teacher.index');
     Route::get('/student_list', [UserController::class, 'studentList'])->name('teacher.student.index');
+    Route::get('/feedback_list', [FeedbackController::class, 'teacherFeedbackList'])->name('teacher.feedback.index');
+    Route::get('/feedback_list/{id}', [FeedbackController::class, 'teacherFeedbackDetail'])->name('teacher.feedback.detail');
 });
 
 // Student

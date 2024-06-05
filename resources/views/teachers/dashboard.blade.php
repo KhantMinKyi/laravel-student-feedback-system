@@ -148,24 +148,34 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             @foreach ($yearlyData as $yearData)
+                var courseNames = {!! json_encode(array_column($yearData['data'], 'course_name')) !!};
+                var feedbackPercentages = {!! json_encode(array_column($yearData['data'], 'average_feedback_percentage')) !!};
+                var feedbackPercentagesComment = {!! json_encode(array_column($yearData['data'], 'average_feedback_percentage_comment')) !!};
                 var ctx = document.getElementById('chart-{{ $yearData['name'] }}').getContext('2d');
                 new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: {!! json_encode(array_column($yearData['data'], 'course_name')) !!},
+                        labels: courseNames,
                         datasets: [{
-                            label: 'Average Feedback Percentage for {{ $yearData['name'] }}',
-                            data: {!! json_encode(array_column($yearData['data'], 'average_feedback_percentage')) !!},
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1
-                        }]
+                                label: 'Average Feedback Percentage',
+                                data: feedbackPercentages,
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Average Feedback Percentage From Comment',
+                                data: feedbackPercentagesComment,
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            }
+                        ]
                     },
                     options: {
                         scales: {
                             y: {
-                                beginAtZero: true,
-                                max: 100
+                                beginAtZero: true
                             }
                         }
                     }

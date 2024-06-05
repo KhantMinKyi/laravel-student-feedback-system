@@ -10,6 +10,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Sentiment\Analyzer;
 
 class FeedbackController extends Controller
 {
@@ -38,12 +39,14 @@ class FeedbackController extends Controller
             if ($teacher_course) {
                 $teacher = User::find($teacher_course->teacher_id);
                 $course->teacher = $teacher;
+                $feedbacks = Feedback::where('year_id', $student_year->year_id)
+                    ->where('course_id', $course->id)
+                    ->where('teacher_id', $course->teacher->id)
+                    ->where('student_id', $student_year->student_id)
+                    ->get();
+            } else {
+                $feedbacks = [];
             }
-            $feedbacks = Feedback::where('year_id', $student_year->year_id)
-                ->where('course_id', $course->id)
-                ->where('teacher_id', $course->teacher->id)
-                ->where('student_id', $student_year->student_id)
-                ->get();
             // return $course;
             if (count($feedbacks) > 0) {
                 unset($student_year->year->courses[$index]);
@@ -57,7 +60,12 @@ class FeedbackController extends Controller
         }
 
         $questions = explode(',', $feedback_template->feedback_template_question);
-        // return $student_year;
+
+        // Check Teacher Exist
+        if (!isset($student_year->year->courses[0]->teacher)) {
+            // return $student_year;
+            $student_year->year->courses = [];
+        }
         return view('students.feedback.feedback_create', compact('questions', 'student_year', 'feedback_template'));
     }
 
@@ -103,6 +111,26 @@ class FeedbackController extends Controller
         $validated['feedback_answers'] = $answers;
         $validated['feedback_date'] = Carbon::now()->format('Y-m-d');
         $validated['feedback_total_percentage'] = $total_percentage;
+
+        // Add ing Sentiment Analysis Algorithm
+        $analyzer = new Analyzer();
+        $feedback_strength_weakness = $analyzer->getSentiment($validated['feedback_strength_weakness']);
+        $feedback_comment = $analyzer->getSentiment($validated['feedback_comment']);
+        $feedback_strength_weakness_count = 1;
+        $feedback_comment_count = 1;
+        if ($feedback_strength_weakness['neu'] == 1 && $feedback_comment['neu'] == 1) {
+            $feedback_strength_weakness_count = 0;
+            $feedback_comment_count = 0;
+        } elseif ($feedback_strength_weakness['neu'] == 1 || !isset($validated['feedback_strength_weakness'])) {
+            $feedback_strength_weakness_count = 0;
+        } elseif ($feedback_comment['neu'] == 1 || !isset($validated['feedback_comment'])) {
+            $feedback_comment_count = 0;
+        }
+        $validated['feedback_total_percentage_comment'] =
+            ($feedback_strength_weakness['compound'] + $feedback_comment['compound']) * 100 / ($feedback_strength_weakness_count + $feedback_comment_count);
+
+        // return $validated['feedback_strength_weakness'];
+        // return $validated;
         Feedback::create($validated);
         return redirect()->back();
     }
@@ -157,5 +185,41 @@ class FeedbackController extends Controller
         $feedbacks = Feedback::with('teacher', 'course', 'year')->where('student_id', Auth::user()->id)->orderBy('feedback_date', 'desc')->get();
         // return $feedbacks;
         return view('students.feedback.feedback_list', compact('feedbacks'));
+    }
+    public function teacherFeedbackList()
+    {
+        $feedbacks = Feedback::with('teacher', 'course', 'year')->where('teacher_id', Auth::user()->id)->orderBy('feedback_date', 'desc')->get();
+        foreach ($feedbacks as $index => $feedback) {
+            $questions = explode(',', $feedback->feedback_questions);
+            $answers = explode(',', $feedback->feedback_answers);
+            $data_array = [];
+            foreach ($questions as $key => $question) {
+                $data_array[] = [
+                    'feedback_question' => $question,
+                    'feedback_answer' => $answers[$key],
+                ];
+            }
+            $feedbacks[$index]['data'] = $data_array;
+        }
+        // return $feedbacks;
+        return view('teachers.feedback_list', compact('feedbacks'));
+    }
+    public function teacherFeedbackDetail(string $id)
+    {
+        $feedback = Feedback::with('teacher', 'student', 'course', 'year')->find($id);
+        if (!$feedback) {
+            return redirect()->back();
+        }
+        $questions = explode(',', $feedback->feedback_questions);
+        $answers = explode(',', $feedback->feedback_answers);
+        $data_array = [];
+        foreach ($questions as $key => $question) {
+            $data_array[] = [
+                'feedback_question' => $question,
+                'feedback_answer' => $answers[$key],
+            ];
+        }
+        // return $data_array;
+        return view('teachers.feedback_detail', compact('feedback', 'data_array'));
     }
 }

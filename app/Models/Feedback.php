@@ -22,6 +22,7 @@ class Feedback extends Model
         'feedback_total_percentage',
         'learning_year',
         'learning_year_second_semester',
+        'feedback_total_percentage_comment',
     ];
     public function teacher()
     {

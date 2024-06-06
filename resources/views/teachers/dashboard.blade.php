@@ -15,9 +15,9 @@
         </div>
     </div>
     {{-- Charts --}}
-    <div style="width: 80%;" class="grid grid-cols-2">
+    <div class="grid grid-cols-2">
         @foreach ($yearlyData as $yearData)
-            <div class=" m-4">
+            <div class=" m-4" style="width: 90%;">
                 <h2 class="text-md font-semibold text-center">Chart for {{ $yearData['name'] }}</h2>
                 <canvas id="chart-{{ $yearData['name'] }}"></canvas>
             </div>

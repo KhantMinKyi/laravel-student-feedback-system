@@ -51,9 +51,20 @@
                                 {{ $data['feedback_question'] }} <br>
                             @endforeach
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 font-semibold">
                             @foreach ($feedback->data as $data)
-                                {{ $data['feedback_answer'] }} <br>
+                                @if ($data['feedback_answer'] == 'very_good')
+                                    Strongly Agree
+                                @elseif ($data['feedback_answer'] == 'good')
+                                    Agree
+                                @elseif ($data['feedback_answer'] == 'normal')
+                                    Neutral
+                                @elseif ($data['feedback_answer'] == 'not_bad')
+                                    Disagree
+                                @elseif ($data['feedback_answer'] == 'bad')
+                                    Strongly Disagree
+                                @endif
+                                <br>
                             @endforeach
                         </td>
                         <td class="px-6 py-4">

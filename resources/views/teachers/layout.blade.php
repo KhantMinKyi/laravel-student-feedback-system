@@ -50,7 +50,7 @@
                 </li>
                 @if (Auth::user()->is_hod == 1)
                     <li>
-                        <a href="#"
+                        <a href="{{ route('teacher.feedback.all_teacher') }}"
                             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                             <i class="fa-solid fa-people-line"></i>
                             <span class="flex-1 ms-3 whitespace-nowrap">All Teachers' Feedbacks</span>

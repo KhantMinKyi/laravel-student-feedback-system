@@ -16,6 +16,9 @@
                     <th scope="col" class="px-10 py-3">
                         Teaching Courses
                     </th>
+                    <th scope="col" class="px-10 py-3">
+                        Academic Year
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -32,8 +35,14 @@
                             <?php
                             $teacher_course = $teacher->getOneTeacherWithCourses($teacher->id);
                             ?>
-                            @foreach ($teacher_course->teacher_courses as $teacher_course)
-                                {{ $teacher_course->courses->course_name }} <br>
+                            @foreach ($teacher_course->teacher_courses as $course)
+                                {{ $course->courses->course_name }} ( Semester
+                                {{ $course->courses->semester }} ) <br>
+                            @endforeach
+                        </td>
+                        <td class="px-6 py-4">
+                            @foreach ($teacher_course->teacher_courses as $course)
+                                {{ $course->teaching_year }} - {{ $course->teaching_year_second_semester }} <br>
                             @endforeach
                         </td>
                     </tr>

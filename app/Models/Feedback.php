@@ -38,6 +38,6 @@ class Feedback extends Model
     }
     public function year()
     {
-        return $this->belongsTo(StudentYear::class, 'year_id');
+        return $this->belongsTo(Year::class, 'year_id');
     }
 }

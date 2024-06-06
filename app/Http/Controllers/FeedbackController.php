@@ -15,7 +15,7 @@ use Sentiment\Analyzer;
 
 class FeedbackController extends Controller
 {
-    private function getTeachersPersonalChart($feedbacks)
+    private function getAllTeachersPersonalChart($feedbacks)
     {
         // Initialize data array
         $data_array = [];
@@ -262,6 +262,24 @@ class FeedbackController extends Controller
         // return $feedbacks;
         return view('students.feedback.feedback_list', compact('feedbacks'));
     }
+    public function adminAllTeacherFeedbackList()
+    {
+        $feedbacks = Feedback::with('teacher', 'course', 'year')->orderBy('feedback_date', 'desc')->get();
+        foreach ($feedbacks as $index => $feedback) {
+            $questions = explode(',', $feedback->feedback_questions);
+            $answers = explode(',', $feedback->feedback_answers);
+            $data_array = [];
+            foreach ($questions as $key => $question) {
+                $data_array[] = [
+                    'feedback_question' => $question,
+                    'feedback_answer' => $answers[$key],
+                ];
+            }
+            $feedbacks[$index]['data'] = $data_array;
+        }
+        // return $feedbacks;
+        return view('admins.feedback.feedback_list', compact('feedbacks'));
+    }
     public function teacherFeedbackList()
     {
         $feedbacks = Feedback::with('teacher', 'course', 'year')->where('teacher_id', Auth::user()->id)->orderBy('feedback_date', 'desc')->get();
@@ -279,6 +297,24 @@ class FeedbackController extends Controller
         }
         // return $feedbacks;
         return view('teachers.feedback_list', compact('feedbacks'));
+    }
+    public function adminTeacherFeedbackDetail(string $id)
+    {
+        $feedback = Feedback::with('teacher', 'student', 'course', 'year')->find($id);
+        if (!$feedback) {
+            return redirect()->back();
+        }
+        $questions = explode(',', $feedback->feedback_questions);
+        $answers = explode(',', $feedback->feedback_answers);
+        $data_array = [];
+        foreach ($questions as $key => $question) {
+            $data_array[] = [
+                'feedback_question' => $question,
+                'feedback_answer' => $answers[$key],
+            ];
+        }
+        // return $data_array;
+        return view('admins.feedback.feedback_detail', compact('feedback', 'data_array'));
     }
     public function teacherFeedbackDetail(string $id)
     {
@@ -311,7 +347,7 @@ class FeedbackController extends Controller
                 return $feedback->learning_year . ' - ' . $feedback->learning_year_second_semester;
             }
         );
-        $yearlyData = $this->getTeachersPersonalChart($feedbacks);
+        $yearlyData = $this->getAllTeachersPersonalChart($feedbacks);
         // return $yearlyData;
 
 

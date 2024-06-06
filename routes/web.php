@@ -28,9 +28,7 @@ Route::get('/', function () {
     return view('login');
 });
 Route::prefix('admin')->middleware(['is_admin'])->group(function () {
-    Route::get('/', function () {
-        return view('admins.dashboard');
-    })->name('admin.index');
+    Route::get('/', [LocationController::class, 'adminDashboard'])->name('admin.index');
     Route::resource('year', YearController::class);
     Route::resource('course', CourseController::class);
     Route::resource('user', UserController::class);
@@ -39,6 +37,8 @@ Route::prefix('admin')->middleware(['is_admin'])->group(function () {
     Route::resource('feedback_template', FeedbackTemplateController::class);
     Route::get('/teacher_list', [UserController::class, 'teacherList'])->name('teacher.list');
     Route::get('/student_list', [UserController::class, 'studentList'])->name('student.list');
+    Route::get('/feedback_list', [FeedbackController::class, 'adminAllTeacherFeedbackList'])->name('admin.feedback.index');
+    Route::get('/feedback_list/{id}', [FeedbackController::class, 'adminTeacherFeedbackDetail'])->name('admin.feedback.detail');
 });
 
 // Teacher

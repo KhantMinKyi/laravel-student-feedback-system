@@ -69,7 +69,7 @@
             <div class="text-xl font-bold">{{ count($current_learning_courses) }}</div>
         </div>
     </div>
-    <div class="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
+    {{-- <div class="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
         <p class="text-2xl text-gray-400 dark:text-gray-500">
             <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                 viewBox="0 0 18 18">
@@ -115,5 +115,5 @@
                 </svg>
             </p>
         </div>
-    </div>
+    </div> --}}
 @endsection

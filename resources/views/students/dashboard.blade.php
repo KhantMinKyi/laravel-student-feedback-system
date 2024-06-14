@@ -16,7 +16,7 @@
 
         </div>
     </div>
-    <div class="flex justify-center h-48 mb-4 rounded-xl bg-green-50 dark:bg-gray-800 ">
+    <div class="flex justify-center mb-4 rounded-xl bg-green-50 dark:bg-gray-800 ">
         <table class="w-full text-sm text-left rtl:text-right rounded-lg text-gray-500 dark:text-gray-400">
             <thead
                 class="text-md text-gray-700 uppercase bg-green-100 dark:bg-gray-700 dark:text-gray-400 table-header-group">

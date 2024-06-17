@@ -26,6 +26,14 @@ return new class extends Migration
             $table->float('feedback_total_percentage_comment')->default(0);
             $table->year('learning_year');
             $table->year('learning_year_second_semester');
+            $table->float('feedback_strength_weakness_neu')->default(0);
+            $table->float('feedback_strength_weakness_pos')->default(0);
+            $table->float('feedback_strength_weakness_neg')->default(0);
+            $table->float('feedback_strength_weakness_compound')->default(0);
+            $table->float('feedback_comment_neu')->default(0);
+            $table->float('feedback_comment_pos')->default(0);
+            $table->float('feedback_comment_neg')->default(0);
+            $table->float('feedback_comment_compound')->default(0);
             $table->timestamps();
         });
     }

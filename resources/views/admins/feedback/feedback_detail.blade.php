@@ -61,6 +61,52 @@
                     placeholder="Enter Comment " disabled>{{ $feedback->feedback_comment }}</textarea>
             </div>
             <div>
+                <div>
+                    <label for="feedback_strength_weakness"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Teacher's Teaching Strengths
+                        and
+                        Weakness Analysis</label>
+                    <div class="grid grid-cols-4 gap-5">
+                        <div class=" bg-green-50 bg-opacity-90 shadow-md rounded-md p-2 cursor-pointer">
+                            <h1 for="feedback_strength_weakness" class="text-center font-bold">Positive</h1>
+                            <p class="text-center">{{ $feedback->feedback_strength_weakness_pos }}</p>
+                        </div>
+                        <div class=" bg-yellow-50 bg-opacity-90 shadow-md rounded-md p-2 cursor-pointer">
+                            <h1 for="feedback_strength_weakness" class="text-center font-bold">Neural</h1>
+                            <p class="text-center">{{ $feedback->feedback_strength_weakness_neu }}</p>
+                        </div>
+                        <div class=" bg-red-50 bg-opacity-90 shadow-md rounded-md p-2 cursor-pointer">
+                            <h1 for="feedback_strength_weakness" class="text-center font-bold">Negative</h1>
+                            <p class="text-center">{{ $feedback->feedback_strength_weakness_neg }}</p>
+                        </div>
+                        <div class=" bg-blue-50 bg-opacity-90 shadow-md rounded-md p-2 cursor-pointer">
+                            <h1 for="feedback_strength_weakness" class="text-center font-bold">Compound</h1>
+                            <p class="text-center">{{ $feedback->feedback_strength_weakness_compound }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="feedback_comment" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">To
+                        improve on teaching and learning in this subject Analysis</label>
+                    <div class="grid grid-cols-4 gap-5">
+                        <div class=" bg-green-50 bg-opacity-90 shadow-md rounded-md p-2 cursor-pointer">
+                            <h1 for="feedback_comment" class="text-center font-bold">Positive</h1>
+                            <p class="text-center">{{ $feedback->feedback_comment_pos }}</p>
+                        </div>
+                        <div class=" bg-yellow-50 bg-opacity-90 shadow-md rounded-md p-2 cursor-pointer">
+                            <h1 for="feedback_comment" class="text-center font-bold">Neural</h1>
+                            <p class="text-center">{{ $feedback->feedback_comment_neu }}</p>
+                        </div>
+                        <div class=" bg-red-50 bg-opacity-90 shadow-md rounded-md p-2 cursor-pointer">
+                            <h1 for="feedback_comment" class="text-center font-bold">Negative</h1>
+                            <p class="text-center">{{ $feedback->feedback_comment_neg }}</p>
+                        </div>
+                        <div class=" bg-blue-50 bg-opacity-90 shadow-md rounded-md p-2 cursor-pointer">
+                            <h1 for="feedback_comment" class="text-center font-bold">Compound</h1>
+                            <p class="text-center">{{ $feedback->feedback_comment_compound }}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>

@@ -23,6 +23,14 @@ class Feedback extends Model
         'learning_year',
         'learning_year_second_semester',
         'feedback_total_percentage_comment',
+        'feedback_strength_weakness_neu',
+        'feedback_strength_weakness_pos',
+        'feedback_strength_weakness_neg',
+        'feedback_strength_weakness_compound',
+        'feedback_comment_neu',
+        'feedback_comment_pos',
+        'feedback_comment_neg',
+        'feedback_comment_compound',
     ];
     public function teacher()
     {

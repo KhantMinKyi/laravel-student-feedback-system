@@ -202,9 +202,16 @@ class FeedbackController extends Controller
         } elseif ($feedback_comment['neu'] == 1 || !isset($validated['feedback_comment'])) {
             $feedback_comment_count = 0;
         }
+        $validated['feedback_strength_weakness_neu'] = $feedback_strength_weakness['neu'];
+        $validated['feedback_strength_weakness_pos'] = $feedback_strength_weakness['pos'];
+        $validated['feedback_strength_weakness_neg'] = $feedback_strength_weakness['neg'];
+        $validated['feedback_strength_weakness_compound'] = $feedback_strength_weakness['compound'];
+        $validated['feedback_comment_neu'] = $feedback_comment['neu'];
+        $validated['feedback_comment_pos'] = $feedback_comment['pos'];
+        $validated['feedback_comment_neg'] = $feedback_comment['neg'];
+        $validated['feedback_comment_compound'] = $feedback_comment['compound'];
         $validated['feedback_total_percentage_comment'] =
             ($feedback_strength_weakness['compound'] + $feedback_comment['compound']) * 100 / ($feedback_strength_weakness_count + $feedback_comment_count);
-
         // return $validated['feedback_strength_weakness'];
         // return $validated;
         Feedback::create($validated);

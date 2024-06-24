@@ -109,6 +109,7 @@ class FeedbackController extends Controller
         //     if ($course->semester == 1) {
         //     }
         // }
+        // return response()->json($student_year);
         foreach ($student_year->year->courses as $index => $course) {
             $teacher_course = TeacherCourse::where('course_id', $course->id)
                 ->where('teaching_year', $student_year->learning_year)->first();
@@ -123,7 +124,6 @@ class FeedbackController extends Controller
             } else {
                 $feedbacks = [];
             }
-            // return $course;
             if (count($feedbacks) > 0) {
                 unset($student_year->year->courses[$index]);
             } else if ($course->semester == 1 && !count($feedbacks) > 0) {
@@ -137,10 +137,12 @@ class FeedbackController extends Controller
 
         $questions = explode(',', $feedback_template->feedback_template_question);
 
+        // return response()->json($student_year->year->courses);
         // Check Teacher Exist
-        if (!isset($student_year->year->courses[0]->teacher)) {
-            // return $student_year;
-            $student_year->year->courses = [];
+        foreach ($student_year->year->courses as $array_key => $course_teacher) {
+            if (!isset($course_teacher->teacher)) {
+                unset($student_year->year->courses[$array_key]);
+            }
         }
         return view('students.feedback.feedback_create', compact('questions', 'student_year', 'feedback_template'));
     }

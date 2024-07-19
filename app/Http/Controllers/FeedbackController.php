@@ -24,17 +24,24 @@ class FeedbackController extends Controller
             $feedback_data_array['name'] = $index;
             $feedback_data_array['data'] = [];
             foreach ($feedback as $data) {
+                $answers = explode(',', $data->feedback_questions);
                 array_push($feedback_data_array['data'], [
-                    'course_id' => $data->course->id,
-                    'year_id' => $data->year->year_name,
-                    'course_name' => $data->course->course_name,
-                    'feedback_total_percentage' => $data->feedback_total_percentage,
-                    'feedback_total_percentage_comment' => $data->feedback_total_percentage_comment,
+                    'course_id'                             => $data->course->id,
+                    'year_id'                               => $data->year->year_name,
+                    'course_name'                           => $data->course->course_name,
+                    'strongly_agree_point'                  => $data->strongly_agree_point,
+                    'agree_point'                           => $data->agree_point,
+                    'neutral_point'                         => $data->neutral_point,
+                    'disagree_point'                        => $data->disagree_point,
+                    'strongly_disagree_point'               => $data->strongly_disagree_point,
+                    'feedback_total_point'                  => $data->feedback_total_point,
+                    'feedback_total_percentage'             => $data->feedback_total_percentage,
+                    'feedback_total_percentage_comment'     => $data->feedback_total_percentage_comment,
+                    'feedback_questions'                    => count($answers),
                 ]);
             }
             array_push($data_array, $feedback_data_array);
         }
-
         // Calculate the count and total for array
         $yearlyData = [];
         foreach ($data_array as $year) {
@@ -49,16 +56,30 @@ class FeedbackController extends Controller
                 }
 
                 if (isset($groupedData[$year_id][$course_id])) {
-                    $groupedData[$year_id][$course_id]['feedback_total_percentage'] += $item['feedback_total_percentage'];
-                    $groupedData[$year_id][$course_id]['feedback_total_percentage_comment'] += $item['feedback_total_percentage_comment'];
-                    $groupedData[$year_id][$course_id]['count'] += 1;
+                    $groupedData[$year_id][$course_id]['strongly_agree_point']                  += $item['strongly_agree_point'];
+                    $groupedData[$year_id][$course_id]['agree_point']                           += $item['agree_point'];
+                    $groupedData[$year_id][$course_id]['neutral_point']                         += $item['neutral_point'];
+                    $groupedData[$year_id][$course_id]['disagree_point']                        += $item['disagree_point'];
+                    $groupedData[$year_id][$course_id]['strongly_disagree_point']               += $item['strongly_disagree_point'];
+                    $groupedData[$year_id][$course_id]['feedback_total_point']                  += $item['feedback_total_point'];
+                    $groupedData[$year_id][$course_id]['feedback_total_percentage']             += $item['feedback_total_percentage'];
+                    $groupedData[$year_id][$course_id]['feedback_total_percentage_comment']     += $item['feedback_total_percentage_comment'];
+                    $groupedData[$year_id][$course_id]['feedback_questions']                     = $item['feedback_questions'];
+                    $groupedData[$year_id][$course_id]['count']                                 += 1;
                 } else {
                     $groupedData[$year_id][$course_id] = [
-                        'course_id' => $course_id,
-                        'course_name' => $item['course_name'],
-                        'feedback_total_percentage' => $item['feedback_total_percentage'],
-                        'feedback_total_percentage_comment' => $item['feedback_total_percentage_comment'],
-                        'count' => 1
+                        'course_id'                                 => $course_id,
+                        'course_name'                               => $item['course_name'],
+                        'strongly_agree_point'                      => $item['strongly_agree_point'],
+                        'agree_point'                               => $item['agree_point'],
+                        'neutral_point'                             => $item['neutral_point'],
+                        'disagree_point'                            => $item['disagree_point'],
+                        'strongly_disagree_point'                   => $item['strongly_disagree_point'],
+                        'feedback_total_point'                      => $item['feedback_total_point'],
+                        'feedback_total_percentage'                 => $item['feedback_total_percentage'],
+                        'feedback_total_percentage_comment'         => $item['feedback_total_percentage_comment'],
+                        'feedback_questions'                        => $item['feedback_questions'],
+                        'count'                                     => 1
                     ];
                 }
             }
@@ -70,21 +91,34 @@ class FeedbackController extends Controller
 
             foreach ($groupedData as $year_id => $courses) {
                 foreach ($courses as $course_id => $courseData) {
+                    $average_strongly_agree_point_percentage = round(($courseData['strongly_agree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
+                    $average_agree_point_percentage = round(($courseData['agree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
+                    $average_neutral_point_percentage = round(($courseData['neutral_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
+                    $average_disagree_point_percentage = round(($courseData['disagree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
+                    $average_strongly_disagree_point_percentage = round(($courseData['strongly_disagree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
+                    $strongly_agree_point = $courseData['strongly_agree_point'] / $courseData['count'];
                     $average_feedback_percentage = $courseData['feedback_total_percentage'] / $courseData['count'];
                     $average_feedback_percentage_comment = $courseData['feedback_total_percentage_comment'] / $courseData['count'];
                     $course = Course::find($course_id);
                     $yearResult["data"][$year_id][] = [
-                        'year_id' => $year_id,
-                        'course_id' => $course_id,
-                        'course_name' => $course ? $course->course_name . ' ( Semester - ' . $course->semester . ')' : 'Unknown',
-                        'total_feedback_percentage' => $courseData['feedback_total_percentage'],
-                        'average_feedback_percentage' => $average_feedback_percentage,
-                        'average_feedback_percentage_comment' => $average_feedback_percentage_comment,
+                        'year_id'                                                               => $year_id,
+                        'course_id'                                                             => $course_id,
+                        'course_name'                                                           => $course ? $course->course_name . ' ( Semester - ' . $course->semester . ')' : 'Unknown',
+                        'strongly_agree_point'                                                  => $strongly_agree_point,
+                        'average_strongly_agree_point_percentage'                               => $average_strongly_agree_point_percentage,
+                        'average_agree_point_percentage'                                        => $average_agree_point_percentage,
+                        'average_neutral_point_percentage'                                      => $average_neutral_point_percentage,
+                        'average_disagree_point_percentage'                                     => $average_disagree_point_percentage,
+                        'average_strongly_disagree_point_percentage'                            => $average_strongly_disagree_point_percentage,
+                        'total_feedback_percentage'                                             => $courseData['feedback_total_percentage'],
+                        'average_feedback_percentage'                                           => $average_feedback_percentage,
+                        'average_feedback_percentage_comment'                                   => $average_feedback_percentage_comment,
                     ];
                 }
             }
 
             $yearlyData[] = $yearResult;
+            // dd($yearlyData);
         }
 
         return $yearlyData;
@@ -174,21 +208,43 @@ class FeedbackController extends Controller
         $answers = implode(',', $answers_array);
 
         $total = 0;
+        $validated['strongly_agree_point'] = 0;
+        $validated['agree_point'] = 0;
+        $validated['neutral_point'] = 0;
+        $validated['disagree_pint'] = 0;
+        $validated['strongly_disagree_point'] = 0;
         $total_percentage = 0;
         $total_questions = count($answers_array);
         foreach ($answers_array as $answer_data) {
-            if ($answer_data == 'very_good') $total += 100;
-            if ($answer_data == 'good') $total += 80;
-            if ($answer_data == 'normal') $total += 50;
-            if ($answer_data == 'not_bad') $total += 30;
-            if ($answer_data == 'bad') $total += 10;
+            if ($answer_data == 'very_good') {
+                $total += 5;
+                $validated['strongly_agree_point'] += 5;
+            }
+            if ($answer_data == 'good') {
+                $total += 4;
+                $validated['agree_point'] += 4;
+            }
+            if ($answer_data == 'normal') {
+                $total += 3;
+                $validated['neutral_point'] += 3;
+            }
+            if ($answer_data == 'not_bad') {
+                $total += 2;
+                $validated['disagree_point'] += 2;
+            }
+            if ($answer_data == 'bad') {
+                $total += 1;
+                $validated['strongly_disagree_point'] += 1;
+            }
         }
-        $total_percentage = round($total / $total_questions, 2);
-
+        $validated['feedback_total_point'] = $total;
+        // $total_percentage = round($total / $total_questions, 2);
+        $total_percentage = round(($total * 100) / ($total_questions * 5), 2);
         $validated['feedback_questions'] = $feedback_template->feedback_template_question;
         $validated['feedback_answers'] = $answers;
         $validated['feedback_date'] = Carbon::now()->format('Y-m-d');
         $validated['feedback_total_percentage'] = $total_percentage;
+        // return $validated;
 
         // Add ing Sentiment Analysis Algorithm
         $analyzer = new Analyzer();

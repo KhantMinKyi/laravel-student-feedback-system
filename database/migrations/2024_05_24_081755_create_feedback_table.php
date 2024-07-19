@@ -24,6 +24,12 @@ return new class extends Migration
             $table->date('feedback_date');
             $table->integer('feedback_total_percentage')->default(0);
             $table->float('feedback_total_percentage_comment')->default(0);
+            $table->float('strongly_agree_point')->default(0);
+            $table->float('agree_point')->default(0);
+            $table->float('neutral_point')->default(0);
+            $table->float('disagree_point')->default(0);
+            $table->float('strongly_disagree_point')->default(0);
+            $table->integer('feedback_total_point')->default(0);
             $table->year('learning_year');
             $table->year('learning_year_second_semester');
             $table->float('feedback_strength_weakness_neu')->default(0);

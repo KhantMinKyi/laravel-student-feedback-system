@@ -211,7 +211,7 @@ class FeedbackController extends Controller
         $validated['strongly_agree_point'] = 0;
         $validated['agree_point'] = 0;
         $validated['neutral_point'] = 0;
-        $validated['disagree_pint'] = 0;
+        $validated['disagree_point'] = 0;
         $validated['strongly_disagree_point'] = 0;
         $total_percentage = 0;
         $total_questions = count($answers_array);

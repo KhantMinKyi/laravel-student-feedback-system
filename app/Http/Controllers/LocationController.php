@@ -17,65 +17,6 @@ class LocationController extends Controller
 {
     private function getTeacherPersonalChart($feedbacks)
     {
-        // add Data format with year
-        $data_array = [];
-        foreach ($feedbacks as $index => $feedback) {
-            $feedback_data_array = [];
-            $feedback_data_array['name'] = $index;
-            $feedback_data_array['data'] = [];
-            foreach ($feedback as $data) {
-                array_push($feedback_data_array['data'], [
-                    'course_id' => $data->course->id,
-                    'course_name' => $data->course->course_name,
-                    'feedback_total_percentage' => $data->feedback_total_percentage,
-                    'feedback_total_percentage_comment' => $data->feedback_total_percentage_comment,
-                ]);
-            }
-            array_push($data_array, $feedback_data_array);
-        }
-
-        // calculate the count and total for array
-        $yearlyData = [];
-        foreach ($data_array as $year) {
-            $sums = [];
-            $counts = [];
-            $comment_sums = [];
-            foreach ($year['data'] as $item) {
-                if (isset($sums[$item['course_id']])) {
-                    $sums[$item['course_id']] += $item['feedback_total_percentage'];
-                    $comment_sums[$item['course_id']] += $item['feedback_total_percentage_comment'];
-                    $counts[$item['course_id']] += 1;
-                } else {
-                    $sums[$item['course_id']] = $item['feedback_total_percentage'];
-                    $comment_sums[$item['course_id']] = $item['feedback_total_percentage_comment'];
-                    $counts[$item['course_id']] = 1;
-                }
-            }
-
-            $yearResult = [
-                "name" => $year["name"],
-                "data" => []
-            ];
-            // calculate the average and arrange the data
-            foreach ($sums as $course_id => $total_feedback_percentage) {
-                $average_feedback_percentage = $total_feedback_percentage / $counts[$course_id];
-                $average_feedback_percentage_comment = $comment_sums[$course_id] / $counts[$course_id];
-                $course = Course::find($course_id);
-                $yearResult["data"][] = [
-                    'course_id' => $course_id,
-                    'course_name' => $course ? $course->course_name . ' ( Semester - ' . $course->semester . ')'  : 'Unknown',
-                    'total_feedback_percentage' => $total_feedback_percentage,
-                    'average_feedback_percentage' => $average_feedback_percentage,
-                    'average_feedback_percentage_comment' => $average_feedback_percentage_comment,
-                ];
-            }
-
-            $yearlyData[] = $yearResult;
-        }
-        return $yearlyData;
-    }
-    private function getAllTeachersPersonalChart($feedbacks)
-    {
         // Initialize data array
         $data_array = [];
         foreach ($feedbacks as $index => $feedback) {
@@ -83,17 +24,24 @@ class LocationController extends Controller
             $feedback_data_array['name'] = $index;
             $feedback_data_array['data'] = [];
             foreach ($feedback as $data) {
+                $answers = explode(',', $data->feedback_questions);
                 array_push($feedback_data_array['data'], [
-                    'course_id' => $data->course->id,
-                    'year_id' => $data->year->year_name,
-                    'course_name' => $data->course->course_name,
-                    'feedback_total_percentage' => $data->feedback_total_percentage,
-                    'feedback_total_percentage_comment' => $data->feedback_total_percentage_comment,
+                    'course_id'                             => $data->course->id,
+                    'year_id'                               => $data->year->year_name,
+                    'course_name'                           => $data->course->course_name,
+                    'strongly_agree_point'                  => $data->strongly_agree_point,
+                    'agree_point'                           => $data->agree_point,
+                    'neutral_point'                         => $data->neutral_point,
+                    'disagree_point'                        => $data->disagree_point,
+                    'strongly_disagree_point'               => $data->strongly_disagree_point,
+                    'feedback_total_point'                  => $data->feedback_total_point,
+                    'feedback_total_percentage'             => $data->feedback_total_percentage,
+                    'feedback_total_percentage_comment'     => $data->feedback_total_percentage_comment,
+                    'feedback_questions'                    => count($answers),
                 ]);
             }
             array_push($data_array, $feedback_data_array);
         }
-
         // Calculate the count and total for array
         $yearlyData = [];
         foreach ($data_array as $year) {
@@ -108,16 +56,30 @@ class LocationController extends Controller
                 }
 
                 if (isset($groupedData[$year_id][$course_id])) {
-                    $groupedData[$year_id][$course_id]['feedback_total_percentage'] += $item['feedback_total_percentage'];
-                    $groupedData[$year_id][$course_id]['feedback_total_percentage_comment'] += $item['feedback_total_percentage_comment'];
-                    $groupedData[$year_id][$course_id]['count'] += 1;
+                    $groupedData[$year_id][$course_id]['strongly_agree_point']                  += $item['strongly_agree_point'];
+                    $groupedData[$year_id][$course_id]['agree_point']                           += $item['agree_point'];
+                    $groupedData[$year_id][$course_id]['neutral_point']                         += $item['neutral_point'];
+                    $groupedData[$year_id][$course_id]['disagree_point']                        += $item['disagree_point'];
+                    $groupedData[$year_id][$course_id]['strongly_disagree_point']               += $item['strongly_disagree_point'];
+                    $groupedData[$year_id][$course_id]['feedback_total_point']                  += $item['feedback_total_point'];
+                    $groupedData[$year_id][$course_id]['feedback_total_percentage']             += $item['feedback_total_percentage'];
+                    $groupedData[$year_id][$course_id]['feedback_total_percentage_comment']     += $item['feedback_total_percentage_comment'];
+                    $groupedData[$year_id][$course_id]['feedback_questions']                     = $item['feedback_questions'];
+                    $groupedData[$year_id][$course_id]['count']                                 += 1;
                 } else {
                     $groupedData[$year_id][$course_id] = [
-                        'course_id' => $course_id,
-                        'course_name' => $item['course_name'],
-                        'feedback_total_percentage' => $item['feedback_total_percentage'],
-                        'feedback_total_percentage_comment' => $item['feedback_total_percentage_comment'],
-                        'count' => 1
+                        'course_id'                                 => $course_id,
+                        'course_name'                               => $item['course_name'],
+                        'strongly_agree_point'                      => $item['strongly_agree_point'],
+                        'agree_point'                               => $item['agree_point'],
+                        'neutral_point'                             => $item['neutral_point'],
+                        'disagree_point'                            => $item['disagree_point'],
+                        'strongly_disagree_point'                   => $item['strongly_disagree_point'],
+                        'feedback_total_point'                      => $item['feedback_total_point'],
+                        'feedback_total_percentage'                 => $item['feedback_total_percentage'],
+                        'feedback_total_percentage_comment'         => $item['feedback_total_percentage_comment'],
+                        'feedback_questions'                        => $item['feedback_questions'],
+                        'count'                                     => 1
                     ];
                 }
             }
@@ -129,21 +91,142 @@ class LocationController extends Controller
 
             foreach ($groupedData as $year_id => $courses) {
                 foreach ($courses as $course_id => $courseData) {
+                    $average_strongly_agree_point_percentage = round(($courseData['strongly_agree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
+                    $average_agree_point_percentage = round(($courseData['agree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
+                    $average_neutral_point_percentage = round(($courseData['neutral_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
+                    $average_disagree_point_percentage = round(($courseData['disagree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
+                    $average_strongly_disagree_point_percentage = round(($courseData['strongly_disagree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
+                    $strongly_agree_point = $courseData['strongly_agree_point'] / $courseData['count'];
                     $average_feedback_percentage = $courseData['feedback_total_percentage'] / $courseData['count'];
                     $average_feedback_percentage_comment = $courseData['feedback_total_percentage_comment'] / $courseData['count'];
                     $course = Course::find($course_id);
                     $yearResult["data"][$year_id][] = [
-                        'year_id' => $year_id,
-                        'course_id' => $course_id,
-                        'course_name' => $course ? $course->course_name . ' ( Semester - ' . $course->semester . ')' : 'Unknown',
-                        'total_feedback_percentage' => $courseData['feedback_total_percentage'],
-                        'average_feedback_percentage' => $average_feedback_percentage,
-                        'average_feedback_percentage_comment' => $average_feedback_percentage_comment,
+                        'year_id'                                                               => $year_id,
+                        'course_id'                                                             => $course_id,
+                        'course_name'                                                           => $course ? $course->course_name . ' ( Semester - ' . $course->semester . ')' : 'Unknown',
+                        'strongly_agree_point'                                                  => $strongly_agree_point,
+                        'average_strongly_agree_point_percentage'                               => $average_strongly_agree_point_percentage,
+                        'average_agree_point_percentage'                                        => $average_agree_point_percentage,
+                        'average_neutral_point_percentage'                                      => $average_neutral_point_percentage,
+                        'average_disagree_point_percentage'                                     => $average_disagree_point_percentage,
+                        'average_strongly_disagree_point_percentage'                            => $average_strongly_disagree_point_percentage,
+                        'total_feedback_percentage'                                             => $courseData['feedback_total_percentage'],
+                        'average_feedback_percentage'                                           => $average_feedback_percentage,
+                        'average_feedback_percentage_comment'                                   => $average_feedback_percentage_comment,
                     ];
                 }
             }
 
             $yearlyData[] = $yearResult;
+            // dd($yearlyData);
+        }
+        // dd($yearlyData);
+        return $yearlyData;
+    }
+    private function getAllTeachersPersonalChart($feedbacks)
+    {
+        // Initialize data array
+        $data_array = [];
+        foreach ($feedbacks as $index => $feedback) {
+            $feedback_data_array = [];
+            $feedback_data_array['name'] = $index;
+            $feedback_data_array['data'] = [];
+            foreach ($feedback as $data) {
+                $answers = explode(',', $data->feedback_questions);
+                array_push($feedback_data_array['data'], [
+                    'course_id'                             => $data->course->id,
+                    'year_id'                               => $data->year->year_name,
+                    'course_name'                           => $data->course->course_name,
+                    'strongly_agree_point'                  => $data->strongly_agree_point,
+                    'agree_point'                           => $data->agree_point,
+                    'neutral_point'                         => $data->neutral_point,
+                    'disagree_point'                        => $data->disagree_point,
+                    'strongly_disagree_point'               => $data->strongly_disagree_point,
+                    'feedback_total_point'                  => $data->feedback_total_point,
+                    'feedback_total_percentage'             => $data->feedback_total_percentage,
+                    'feedback_total_percentage_comment'     => $data->feedback_total_percentage_comment,
+                    'feedback_questions'                    => count($answers),
+                ]);
+            }
+            array_push($data_array, $feedback_data_array);
+        }
+        // Calculate the count and total for array
+        $yearlyData = [];
+        foreach ($data_array as $year) {
+            $groupedData = [];
+
+            foreach ($year['data'] as $item) {
+                $year_id = $item['year_id'];
+                $course_id = $item['course_id'];
+
+                if (!isset($groupedData[$year_id])) {
+                    $groupedData[$year_id] = [];
+                }
+
+                if (isset($groupedData[$year_id][$course_id])) {
+                    $groupedData[$year_id][$course_id]['strongly_agree_point']                  += $item['strongly_agree_point'];
+                    $groupedData[$year_id][$course_id]['agree_point']                           += $item['agree_point'];
+                    $groupedData[$year_id][$course_id]['neutral_point']                         += $item['neutral_point'];
+                    $groupedData[$year_id][$course_id]['disagree_point']                        += $item['disagree_point'];
+                    $groupedData[$year_id][$course_id]['strongly_disagree_point']               += $item['strongly_disagree_point'];
+                    $groupedData[$year_id][$course_id]['feedback_total_point']                  += $item['feedback_total_point'];
+                    $groupedData[$year_id][$course_id]['feedback_total_percentage']             += $item['feedback_total_percentage'];
+                    $groupedData[$year_id][$course_id]['feedback_total_percentage_comment']     += $item['feedback_total_percentage_comment'];
+                    $groupedData[$year_id][$course_id]['feedback_questions']                     = $item['feedback_questions'];
+                    $groupedData[$year_id][$course_id]['count']                                 += 1;
+                } else {
+                    $groupedData[$year_id][$course_id] = [
+                        'course_id'                                 => $course_id,
+                        'course_name'                               => $item['course_name'],
+                        'strongly_agree_point'                      => $item['strongly_agree_point'],
+                        'agree_point'                               => $item['agree_point'],
+                        'neutral_point'                             => $item['neutral_point'],
+                        'disagree_point'                            => $item['disagree_point'],
+                        'strongly_disagree_point'                   => $item['strongly_disagree_point'],
+                        'feedback_total_point'                      => $item['feedback_total_point'],
+                        'feedback_total_percentage'                 => $item['feedback_total_percentage'],
+                        'feedback_total_percentage_comment'         => $item['feedback_total_percentage_comment'],
+                        'feedback_questions'                        => $item['feedback_questions'],
+                        'count'                                     => 1
+                    ];
+                }
+            }
+
+            $yearResult = [
+                "name" => $year["name"],
+                "data" => []
+            ];
+
+            foreach ($groupedData as $year_id => $courses) {
+                foreach ($courses as $course_id => $courseData) {
+                    $average_strongly_agree_point_percentage = round(($courseData['strongly_agree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
+                    $average_agree_point_percentage = round(($courseData['agree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
+                    $average_neutral_point_percentage = round(($courseData['neutral_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
+                    $average_disagree_point_percentage = round(($courseData['disagree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
+                    $average_strongly_disagree_point_percentage = round(($courseData['strongly_disagree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
+                    $strongly_agree_point = $courseData['strongly_agree_point'] / $courseData['count'];
+                    $average_feedback_percentage = $courseData['feedback_total_percentage'] / $courseData['count'];
+                    $average_feedback_percentage_comment = $courseData['feedback_total_percentage_comment'] / $courseData['count'];
+                    $course = Course::find($course_id);
+                    $yearResult["data"][$year_id][] = [
+                        'year_id'                                                               => $year_id,
+                        'course_id'                                                             => $course_id,
+                        'course_name'                                                           => $course ? $course->course_name . ' ( Semester - ' . $course->semester . ')' : 'Unknown',
+                        'strongly_agree_point'                                                  => $strongly_agree_point,
+                        'average_strongly_agree_point_percentage'                               => $average_strongly_agree_point_percentage,
+                        'average_agree_point_percentage'                                        => $average_agree_point_percentage,
+                        'average_neutral_point_percentage'                                      => $average_neutral_point_percentage,
+                        'average_disagree_point_percentage'                                     => $average_disagree_point_percentage,
+                        'average_strongly_disagree_point_percentage'                            => $average_strongly_disagree_point_percentage,
+                        'total_feedback_percentage'                                             => $courseData['feedback_total_percentage'],
+                        'average_feedback_percentage'                                           => $average_feedback_percentage,
+                        'average_feedback_percentage_comment'                                   => $average_feedback_percentage_comment,
+                    ];
+                }
+            }
+
+            $yearlyData[] = $yearResult;
+            // dd($yearlyData);
         }
 
         return $yearlyData;

@@ -133,7 +133,7 @@
                 <h2 class="text-md font-semibold text-center">Chart for {{ $yearData['name'] }}</h2>
                 <div class="year-charts flex flex-wrap">
                     @foreach ($yearData['data'] as $yearId => $dataGroup)
-                        <div class="year-id-section w-1/2 px-2">
+                        <div class="year-id-section w-5/6 px-2">
                             <h3 class="text-sm font-semibold text-center">{{ $yearId }}</h3>
                             <canvas id="chart-{{ $yearData['name'] }}-{{ $yearId }}"></canvas>
                         </div>

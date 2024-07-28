@@ -91,11 +91,16 @@ class LocationController extends Controller
 
             foreach ($groupedData as $year_id => $courses) {
                 foreach ($courses as $course_id => $courseData) {
-                    $average_strongly_agree_point_percentage = round(($courseData['strongly_agree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
-                    $average_agree_point_percentage = round(($courseData['agree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
-                    $average_neutral_point_percentage = round(($courseData['neutral_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
-                    $average_disagree_point_percentage = round(($courseData['disagree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
-                    $average_strongly_disagree_point_percentage = round(($courseData['strongly_disagree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
+                    $total =           $courseData['strongly_agree_point'] +
+                        $courseData['agree_point'] +
+                        $courseData['neutral_point'] +
+                        $courseData['disagree_point'] +
+                        $courseData['strongly_disagree_point'];
+                    $average_strongly_agree_point_percentage = round(($courseData['strongly_agree_point'] * 100) / $total, 2);
+                    $average_agree_point_percentage = round(($courseData['agree_point'] * 100) / $total, 2);
+                    $average_neutral_point_percentage = round(($courseData['neutral_point'] * 100) / $total, 2);
+                    $average_disagree_point_percentage = round(($courseData['disagree_point'] * 100) / $total, 2);
+                    $average_strongly_disagree_point_percentage = round(($courseData['strongly_disagree_point'] * 100) / $total, 2);
                     $strongly_agree_point = $courseData['strongly_agree_point'] / $courseData['count'];
                     $average_feedback_percentage = $courseData['feedback_total_percentage'] / $courseData['count'];
                     $average_feedback_percentage_comment = $courseData['feedback_total_percentage_comment'] / $courseData['count'];
@@ -199,12 +204,17 @@ class LocationController extends Controller
 
             foreach ($groupedData as $year_id => $courses) {
                 foreach ($courses as $course_id => $courseData) {
-                    $average_strongly_agree_point_percentage = round(($courseData['strongly_agree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
-                    $average_agree_point_percentage = round(($courseData['agree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
-                    $average_neutral_point_percentage = round(($courseData['neutral_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
-                    $average_disagree_point_percentage = round(($courseData['disagree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
-                    $average_strongly_disagree_point_percentage = round(($courseData['strongly_disagree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
-                    $strongly_agree_point = $courseData['strongly_agree_point'] / $courseData['count'];
+                    $total =           $courseData['strongly_agree_point'] +
+                        $courseData['agree_point'] +
+                        $courseData['neutral_point'] +
+                        $courseData['disagree_point'] +
+                        $courseData['strongly_disagree_point'];
+                    $average_strongly_agree_point_percentage = round(($courseData['strongly_agree_point'] * 100) / $total, 2);
+                    $average_agree_point_percentage = round(($courseData['agree_point'] * 100) / $total, 2);
+                    $average_neutral_point_percentage = round(($courseData['neutral_point'] * 100) / $total, 2);
+                    $average_disagree_point_percentage = round(($courseData['disagree_point'] * 100) / $total, 2);
+                    $average_strongly_disagree_point_percentage = round(($courseData['strongly_disagree_point'] * 100) / $total, 2);
+                    $strongly_agree_point = $courseData['strongly_agree_point'];
                     $average_feedback_percentage = $courseData['feedback_total_percentage'] / $courseData['count'];
                     $average_feedback_percentage_comment = $courseData['feedback_total_percentage_comment'] / $courseData['count'];
                     $course = Course::find($course_id);
@@ -213,6 +223,10 @@ class LocationController extends Controller
                         'course_id'                                                             => $course_id,
                         'course_name'                                                           => $course ? $course->course_name . ' ( Semester - ' . $course->semester . ')' : 'Unknown',
                         'strongly_agree_point'                                                  => $strongly_agree_point,
+                        'agree_point'                                                           => $courseData['agree_point'],
+                        'neutral_point'                                                         => $courseData['neutral_point'],
+                        'disagree_point'                                                        => $courseData['disagree_point'],
+                        'strongly_disagree_point'                                               => $courseData['strongly_disagree_point'],
                         'average_strongly_agree_point_percentage'                               => $average_strongly_agree_point_percentage,
                         'average_agree_point_percentage'                                        => $average_agree_point_percentage,
                         'average_neutral_point_percentage'                                      => $average_neutral_point_percentage,

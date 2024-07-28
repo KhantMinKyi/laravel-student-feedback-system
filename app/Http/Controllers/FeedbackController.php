@@ -91,11 +91,16 @@ class FeedbackController extends Controller
 
             foreach ($groupedData as $year_id => $courses) {
                 foreach ($courses as $course_id => $courseData) {
-                    $average_strongly_agree_point_percentage = round(($courseData['strongly_agree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
-                    $average_agree_point_percentage = round(($courseData['agree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
-                    $average_neutral_point_percentage = round(($courseData['neutral_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
-                    $average_disagree_point_percentage = round(($courseData['disagree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
-                    $average_strongly_disagree_point_percentage = round(($courseData['strongly_disagree_point'] * 100) / (($courseData['feedback_questions'] * 5) * $courseData['count']), 2);
+                    $total =           $courseData['strongly_agree_point'] +
+                        $courseData['agree_point'] +
+                        $courseData['neutral_point'] +
+                        $courseData['disagree_point'] +
+                        $courseData['strongly_disagree_point'];
+                    $average_strongly_agree_point_percentage = round(($courseData['strongly_agree_point'] * 100) / $total, 2);
+                    $average_agree_point_percentage = round(($courseData['agree_point'] * 100) / $total, 2);
+                    $average_neutral_point_percentage = round(($courseData['neutral_point'] * 100) / $total, 2);
+                    $average_disagree_point_percentage = round(($courseData['disagree_point'] * 100) / $total, 2);
+                    $average_strongly_disagree_point_percentage = round(($courseData['strongly_disagree_point'] * 100) / $total, 2);
                     $strongly_agree_point = $courseData['strongly_agree_point'];
                     $average_feedback_percentage = $courseData['feedback_total_percentage'] / $courseData['count'];
                     $average_feedback_percentage_comment = $courseData['feedback_total_percentage_comment'] / $courseData['count'];
@@ -418,160 +423,6 @@ class FeedbackController extends Controller
         );
         $yearlyData = $this->getAllTeachersPersonalChart($feedbacks);
         // return $yearlyData;
-
-
-        // $yearlyData = [
-        //     [
-        //         "name" => "2023 - 2024",
-        //         "data" => [
-        //             "Fifth Year" => [
-        //                 [
-        //                     "year_id" => "Fifth Year",
-        //                     "course_id" => 1,
-        //                     "course_name" => "DSP ( Semester - 1)",
-        //                     "total_feedback_percentage" => 100,
-        //                     "average_feedback_percentage" => 100,
-        //                     "average_feedback_percentage_comment" => 53.87
-        //                 ],
-        //                 [
-        //                     "year_id" => "Fifth Year",
-        //                     "course_id" => 2,
-        //                     "course_name" => "DSP ( Semester - 2)",
-        //                     "total_feedback_percentage" => 80,
-        //                     "average_feedback_percentage" => 80,
-        //                     "average_feedback_percentage_comment" => 45.8
-        //                 ],
-        //                 [
-        //                     "year_id" => "Fifth Year",
-        //                     "course_id" => 1,
-        //                     "course_name" => "DSP ( Semester - 1)",
-        //                     "total_feedback_percentage" => 100,
-        //                     "average_feedback_percentage" => 100,
-        //                     "average_feedback_percentage_comment" => 53.87
-        //                 ],
-        //                 [
-        //                     "year_id" => "Fifth Year",
-        //                     "course_id" => 2,
-        //                     "course_name" => "DSP ( Semester - 2)",
-        //                     "total_feedback_percentage" => 80,
-        //                     "average_feedback_percentage" => 80,
-        //                     "average_feedback_percentage_comment" => 45.8
-        //                 ],
-        //                 [
-        //                     "year_id" => "Fifth Year",
-        //                     "course_id" => 1,
-        //                     "course_name" => "DSP ( Semester - 1)",
-        //                     "total_feedback_percentage" => 100,
-        //                     "average_feedback_percentage" => 100,
-        //                     "average_feedback_percentage_comment" => 53.87
-        //                 ],
-        //                 [
-        //                     "year_id" => "Fifth Year",
-        //                     "course_id" => 2,
-        //                     "course_name" => "DSP ( Semester - 2)",
-        //                     "total_feedback_percentage" => 80,
-        //                     "average_feedback_percentage" => 80,
-        //                     "average_feedback_percentage_comment" => 45.8
-        //                 ],
-        //                 [
-        //                     "year_id" => "Fifth Year",
-        //                     "course_id" => 3,
-        //                     "course_name" => "HSS ( Semester - 1)",
-        //                     "total_feedback_percentage" => 80,
-        //                     "average_feedback_percentage" => 80,
-        //                     "average_feedback_percentage_comment" => 45.8
-        //                 ]
-        //             ],
-        //             "Sixth Year" => [
-        //                 [
-        //                     "year_id" => "Sixth Year",
-        //                     "course_id" => 4,
-        //                     "course_name" => "AI ( Semester - 2)",
-        //                     "total_feedback_percentage" => 100,
-        //                     "average_feedback_percentage" => 100,
-        //                     "average_feedback_percentage_comment" => 68.8
-        //                 ]
-        //             ]
-        //         ]
-        //     ],
-        //     [
-        //         "name" => "2022 - 2023",
-        //         "data" => [
-        //             "Fifth Year" => [
-        //                 [
-        //                     "year_id" => "Fifth Year",
-        //                     "course_id" => 1,
-        //                     "course_name" => "DSP ( Semester - 1)",
-        //                     "total_feedback_percentage" => 80,
-        //                     "average_feedback_percentage" => 80,
-        //                     "average_feedback_percentage_comment" => 45.8
-        //                 ]
-        //             ]
-        //         ]
-        //     ],
-        //     [
-        //         "name" => "2021 - 2022",
-        //         "data" => [
-        //             "First Year" => [
-        //                 [
-        //                     "year_id" => "First Year",
-        //                     "course_id" => 1,
-        //                     "course_name" => "Mathematics",
-        //                     "total_feedback_percentage" => 90,
-        //                     "average_feedback_percentage" => 90,
-        //                     "average_feedback_percentage_comment" => 67.2
-        //                 ],
-        //                 [
-        //                     "year_id" => "First Year",
-        //                     "course_id" => 2,
-        //                     "course_name" => "Physics",
-        //                     "total_feedback_percentage" => 85,
-        //                     "average_feedback_percentage" => 85,
-        //                     "average_feedback_percentage_comment" => 72.1
-        //                 ],
-        //                 [
-        //                     "year_id" => "First Year",
-        //                     "course_id" => 3,
-        //                     "course_name" => "Chemistry",
-        //                     "total_feedback_percentage" => 88,
-        //                     "average_feedback_percentage" => 88,
-        //                     "average_feedback_percentage_comment" => 68.9
-        //                 ]
-        //             ],
-        //             "Second Year" => [
-        //                 [
-        //                     "year_id" => "Second Year",
-        //                     "course_id" => 4,
-        //                     "course_name" => "Biology",
-        //                     "total_feedback_percentage" => 82,
-        //                     "average_feedback_percentage" => 82,
-        //                     "average_feedback_percentage_comment" => 70.5
-        //                 ]
-        //             ],
-        //             "Third Year" => [
-        //                 [
-        //                     "year_id" => "Third Year",
-        //                     "course_id" => 5,
-        //                     "course_name" => "Computer Science",
-        //                     "total_feedback_percentage" => 95,
-        //                     "average_feedback_percentage" => 95,
-        //                     "average_feedback_percentage_comment" => 85.3
-        //                 ]
-        //             ],
-        //             "Fourth Year" => [
-        //                 [
-        //                     "year_id" => "Fourth Year",
-        //                     "course_id" => 6,
-        //                     "course_name" => "Electrical Engineering",
-        //                     "total_feedback_percentage" => 87,
-        //                     "average_feedback_percentage" => 87,
-        //                     "average_feedback_percentage_comment" => 75.6
-        //                 ]
-        //             ]
-        //         ]
-        //     ]
-        // ];
-
 
         return view('teachers.feedback_list_all_teacher', compact('yearlyData'));
     }

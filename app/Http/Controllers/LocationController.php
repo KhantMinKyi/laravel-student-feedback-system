@@ -105,10 +105,17 @@ class LocationController extends Controller
                     $average_feedback_percentage = $courseData['feedback_total_percentage'] / $courseData['count'];
                     $average_feedback_percentage_comment = $courseData['feedback_total_percentage_comment'] / $courseData['count'];
                     $course = Course::find($course_id);
+                    if ($course) {
+                        $start = strpos($course->course_name, '(') + 1;
+                        $end = strpos($course->course_name, ')');
+                        $course_name = substr($course->course_name, $start, $end - $start) . ' ( Semester - ' . $course->semester . ')';
+                    } else {
+                        $course_name = 'Unknown';
+                    }
                     $yearResult["data"][$year_id][] = [
                         'year_id'                                                               => $year_id,
                         'course_id'                                                             => $course_id,
-                        'course_name'                                                           => $course ? $course->course_name . ' ( Semester - ' . $course->semester . ')' : 'Unknown',
+                        'course_name'                                                           => $course_name,
                         'strongly_agree_point'                                                  => $strongly_agree_point,
                         'average_strongly_agree_point_percentage'                               => $average_strongly_agree_point_percentage,
                         'average_agree_point_percentage'                                        => $average_agree_point_percentage,
@@ -138,10 +145,13 @@ class LocationController extends Controller
             $feedback_data_array['data'] = [];
             foreach ($feedback as $data) {
                 $answers = explode(',', $data->feedback_questions);
+                $start = strpos($data->course->course_name, '(') + 1;
+                $end = strpos($data->course->course_name, ')');
+                $course_name = substr($data->course->course_name, $start, $end - $start);
                 array_push($feedback_data_array['data'], [
                     'course_id'                             => $data->course->id,
                     'year_id'                               => $data->year->year_name,
-                    'course_name'                           => $data->course->course_name,
+                    'course_name'                           => $course_name ?? $data->course->course_name,
                     'strongly_agree_point'                  => $data->strongly_agree_point,
                     'agree_point'                           => $data->agree_point,
                     'neutral_point'                         => $data->neutral_point,
@@ -218,10 +228,17 @@ class LocationController extends Controller
                     $average_feedback_percentage = $courseData['feedback_total_percentage'] / $courseData['count'];
                     $average_feedback_percentage_comment = $courseData['feedback_total_percentage_comment'] / $courseData['count'];
                     $course = Course::find($course_id);
+                    if ($course) {
+                        $start = strpos($course->course_name, '(') + 1;
+                        $end = strpos($course->course_name, ')');
+                        $course_name = substr($course->course_name, $start, $end - $start) . ' ( Semester - ' . $course->semester . ')';
+                    } else {
+                        $course_name = 'Unknown';
+                    }
                     $yearResult["data"][$year_id][] = [
                         'year_id'                                                               => $year_id,
                         'course_id'                                                             => $course_id,
-                        'course_name'                                                           => $course ? $course->course_name . ' ( Semester - ' . $course->semester . ')' : 'Unknown',
+                        'course_name'                                                           => $course_name,
                         'strongly_agree_point'                                                  => $strongly_agree_point,
                         'agree_point'                                                           => $courseData['agree_point'],
                         'neutral_point'                                                         => $courseData['neutral_point'],

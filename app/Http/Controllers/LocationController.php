@@ -108,7 +108,7 @@ class LocationController extends Controller
                     if ($course) {
                         $start = strpos($course->course_name, '(') + 1;
                         $end = strpos($course->course_name, ')');
-                        $course_name = substr($course->course_name, $start, $end - $start) . ' ( Semester - ' . $course->semester . ')';
+                        $course_name = substr($course->course_name, $start, $end - $start) . ' ( S - ' . $course->semester . ')';
                     } else {
                         $course_name = 'Unknown';
                     }
@@ -231,7 +231,7 @@ class LocationController extends Controller
                     if ($course) {
                         $start = strpos($course->course_name, '(') + 1;
                         $end = strpos($course->course_name, ')');
-                        $course_name = substr($course->course_name, $start, $end - $start) . ' ( Semester - ' . $course->semester . ')';
+                        $course_name = substr($course->course_name, $start, $end - $start) . ' ( S - ' . $course->semester . ')';
                     } else {
                         $course_name = 'Unknown';
                     }

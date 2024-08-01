@@ -12,8 +12,18 @@
             <div>
                 <h2 class="text-md font-semibold text-center">Table for {{ $yearData['name'] }}</h2>
                 @foreach ($yearData['data'] as $year => $data)
-                    <h1 class="text-sm my-2 mt-4 font-bold text-green-800">{{ $year }}( {{ $yearData['name'] }} )
-                    </h1>
+                    <div class="flex justify-between my-2">
+                        <h1 class="text-sm my-2 mt-4 font-bold text-green-800">{{ $year }}( {{ $yearData['name'] }} )
+                        </h1>
+                        <form action="{{ route('teacher.feedback.export') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="name" value="{{ $yearData['name'] }}">
+                            <input type="hidden" name="data" value="{{ json_encode($data) }}">
+                            <button type="submit" class="p-2 bg-blue-400 rounded-md  font-bold cursor-pointer">Export
+                                Excel</button>
+                        </form>
+                    </div>
+
                     <table
                         class=" table-auto w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-b-2">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

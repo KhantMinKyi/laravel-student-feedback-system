@@ -39,6 +39,7 @@ Route::prefix('admin')->middleware(['is_admin'])->group(function () {
     Route::get('/student_list', [UserController::class, 'studentList'])->name('student.list');
     Route::get('/feedback_list', [FeedbackController::class, 'adminAllTeacherFeedbackList'])->name('admin.feedback.index');
     Route::get('/feedback_list/{id}', [FeedbackController::class, 'adminTeacherFeedbackDetail'])->name('admin.feedback.detail');
+    Route::post('/feedback_list_export', [FeedbackController::class, 'feedbackListExport'])->name('admin.feedback.export');
 });
 
 // Teacher
@@ -50,6 +51,7 @@ Route::prefix('teacher')->middleware(['is_teacher'])->group(function () {
     Route::get('/feedback_list', [FeedbackController::class, 'teacherFeedbackList'])->name('teacher.feedback.index');
     Route::get('/feedback_list/{id}', [FeedbackController::class, 'teacherFeedbackDetail'])->name('teacher.feedback.detail');
     Route::get('/feedback_list_all_teacher', [FeedbackController::class, 'allTeacherFeedbackList'])->name('teacher.feedback.all_teacher');
+    Route::post('/feedback_list_export', [FeedbackController::class, 'feedbackListExport'])->name('teacher.feedback.export');
 });
 
 // Student

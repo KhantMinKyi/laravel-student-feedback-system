@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\FeedbackExport;
 use App\Models\Course;
 use App\Models\Feedback;
 use App\Models\FeedbackTemplate;
@@ -11,6 +12,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Sentiment\Analyzer;
 
 class FeedbackController extends Controller
@@ -435,5 +437,15 @@ class FeedbackController extends Controller
         // return $yearlyData;
 
         return view('teachers.feedback_list_all_teacher', compact('yearlyData'));
+    }
+    public function feedbackListExport(Request $request)
+    {
+        $data = json_decode($request->input('data'), true);
+        $final_data = [
+            'name' => $request->name,
+            'data' => $data,
+        ];
+        return Excel::download(new FeedbackExport($final_data), 'feedback_list_excel.xlsx');
+        return $final_data;
     }
 }
